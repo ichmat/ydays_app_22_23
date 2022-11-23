@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { useTest } from '../../hooks';
-
+import { Task } from '../../components'
 const Home = ({ navigation }: any) => {
   const [text, onChangeText] = useState("Useless Text");
 
@@ -15,7 +15,7 @@ const Home = ({ navigation }: any) => {
             value={hookTxt}
         />
         <Text style={{borderWidth:1, textAlign:'center'}}>Resultat : {text}</Text>
-
+        <Task />
         <Text>{obj.var}</Text>
 
         <Pressable onPress={() => { navigation.push('Tasks') }} >

@@ -1,1 +1,1 @@
-//export { default as TimerBar } from './TimerBar'
+export { default as Task } from './Task'
