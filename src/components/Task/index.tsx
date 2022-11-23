@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View } from 'react-native';
 
-type ProfileIconProps = {
+type TaskProps = {
     duText? : string,
     unNombre?: number
 }
 
-const Task = (props : ProfileIconProps) => {
+const Task = (props : TaskProps) => {
     return (
         <View style={{backgroundColor:'#00FF00'}}>
             <Text>duText : {props.duText}</Text>
-            <Text>duText : {props.unNombre}</Text>
+            <Text>unNombre : {props.unNombre}</Text>
         </View>
     );
 }

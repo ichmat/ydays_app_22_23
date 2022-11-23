@@ -5,8 +5,9 @@ import { useTest } from '../../hooks';
 import { Task } from '../../components'
 const Home = ({ navigation }: any) => {
   const [text, onChangeText] = useState("Useless Text");
-
- const { hookTxt, setHookTxt, obj } = useTest();
+  const { hookTxt, setHookTxt, obj } = useTest();
+  
+  const [isShow, setIsShow] = useState<boolean>(false);
 
   return (
     <View style={styles.container}>
@@ -14,17 +15,19 @@ const Home = ({ navigation }: any) => {
             onChangeText={setHookTxt}
             value={hookTxt}
         />
-        <Text style={{borderWidth:1, textAlign:'center'}}>Resultat : {text}</Text>
-        <Task />
+        <Pressable onPress={() => {setIsShow(true)}}>créer tache</Pressable>
+        
+        {isShow && (
+          <View>{hookTxt}</View>
+        )}
+        
+        <Task duText='du text' unNombre={1} />
         <Text>{obj.var}</Text>
-
-        <Pressable onPress={() => { navigation.push('Tasks') }} >
-            <Text>Mes tâches</Text>
-        </Pressable>
+        
     </View>
   );
 }
-
+/**<Pressable onPress={() => <TextInput onChangeText={}></TextInput>} > </Pressable> */
 const styles = StyleSheet.create({
     container: {
       marginTop: 50, 
