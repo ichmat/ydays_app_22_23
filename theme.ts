@@ -1,0 +1,13 @@
+export enum ThemeColor {
+    PRIMARY = '#36393F',
+    PRIMARY_SHADE = '#26292F',
+    PRIMARY_THIN = '#46494F',
+    PRIMARY_LIGHT = '#969A9F',
+    PRIMARY_TEXT = '#F0F0F0',
+    SECONDARY_TEXT = '#C0C0C0',
+    TERTIARY_TEXT = '#A0A0A0',
+    SUCCESS = '#75C54A',
+    WARNING = '#FF9671',
+    DANGER = '#F04343',
+    WHITE = '#F0F0F0'
+}
