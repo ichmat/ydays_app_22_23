@@ -1,18 +1,73 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
-import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated } from 'react-native';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
 import { Home, Tasks } from './src/pages';
+import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-material/core";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useFonts } from 'expo-font';
+import React from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
-  
+  const navigation = useRef<any>(undefined)
+  const [navIsReady, setNavIsReady] = useState<boolean>(false)
+  const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(false)
+  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("")
+  const [actualNavigation, setActualNavigation] = useState<string>("Home")
+  /*const [fontsLoaded, fontError] = useFonts({
+    'BerlinSansFB' : require("./assets/fonts/Berlin Sans FB Regular.ttf"),
+  });*/
+
+  useEffect(() => {
+    //console.log('loaded : ' + fontsLoaded)
+    if(/* fontsLoaded && */ navigation != undefined && navigation.current.isReady()){
+      setNavIsReady(true)
+      setActualNavigation(navigation.current.getCurrentRoute().name)
+      if(isWaitingChangingLocaltion){
+        setIsWaitingChangingLocaltion(false)
+        const location = waitingChangingLocaltion;
+        setWaitingChangingLocaltion("")
+        navigation.current.navigate(location)
+        navTabUpdate(location)
+      }
+    }
+  }, [/*fontsLoaded, */ navigation])
+
+  const navigate = (to : string) => {
+    if(navIsReady){
+      navigation.current.navigate(to)
+      navTabUpdate(to)
+    }else{
+      setIsWaitingChangingLocaltion(true)
+      setWaitingChangingLocaltion(to)
+    }
+  }
+
+  const navTabUpdate = (page : string) => {
+    setActualNavigation(page)
+  }
+
+  if (!true) {
+    return (
+      <View style={{ flex: 1, justifyContent:'center', alignItems:'center' , backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
+        <ActivityIndicator size={40} color={ThemeColor.PRIMARY_LIGHT} />
+      </View>
+    )
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
-      <NavigationContainer theme={{
+      <NavigationContainer ref={navigation} 
+      theme={{
         dark: true,
         colors: {
           primary: ThemeColor.PRIMARY,
@@ -24,44 +79,56 @@ export default function App() {
         }
       }
       }>
-
-          <Stack.Navigator
-            screenOptions={{}}>
-            <Stack.Screen
-              options={{
-                headerShown: false
-              }}
-              name="Home"
-              component={Home}
-            />
-            <Stack.Screen
-              name="Tasks"
-              component={Tasks}
-              options={{
-                title: "Mes tâches",
-                headerStyle: {
-                  backgroundColor: ThemeColor.PRIMARY_SHADE,
-                },
-                headerShadowVisible: false,
-                headerTintColor: ThemeColor.PRIMARY_TEXT,
-              }}
-            />
-          </Stack.Navigator>
+        <Stack.Navigator
+        initialRouteName='Home'
+          screenOptions={{
+            headerShown: false
+          }}>
+          <Stack.Screen
+            initialParams={{navTabUpdate: navTabUpdate}}
+            name="Home"
+            component={Home}
+          />
+          <Stack.Screen
+            initialParams={{navTabUpdate: navTabUpdate}}
+            name="Tasks"
+            component={Tasks}
+            options={{
+              headerShown: false,
+              title: "Mes tâches",
+              headerStyle: {
+                backgroundColor: ThemeColor.PRIMARY_SHADE,
+              },
+              headerShadowVisible: false,
+              headerTintColor: ThemeColor.PRIMARY_TEXT,
+            }}
+          />
+        </Stack.Navigator>
+          
       </NavigationContainer>
+      <View style={{backgroundColor:ThemeColor.PRIMARY ,margin:0, height:70, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
+        <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome5 name='gift' style={styles.icon} size={40} color={ actualNavigation == "Gift" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome5 name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
+      </View>
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50, 
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input: {
-    /** style ici */
+  icon: {
+    textShadowColor: "#00000029",
+    textShadowOffset : {
+      width: 0,
+      height: 3,
+    },
+    textShadowRadius: 10,
   }
 });

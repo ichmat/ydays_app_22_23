@@ -3,25 +3,36 @@ import { Button, TextInput, StatusBar, StyleSheet, Text, View } from 'react-nati
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { ThemeColor } from '../../../theme';
 import { Stack, Pressable, IconButton, AppBar, FAB } from "@react-native-material/core";
+import React from 'react';
 
-const Home = ({ navigation }: any) => {
+
+
+const Home = (HomeProp: any) => {
+  const navTabUpdate = HomeProp.route.params.navTabUpdate;
+
+  const navigate = (to: string) => {
+    navTabUpdate(to)
+    HomeProp.navigation.navigate(to)
+  }
 
   return (
     <View style={styles.container}>
-        <Pressable style={styles.input} onPress={() => { navigation.push('Tasks') }} >
-            <Text style={styles.inputText}>Mes tâches</Text>
-        </Pressable>
+        <Text style={styles.title}> Welcome ! </Text>
     </View>
-  );
+  ); 
 }
 
 const styles = StyleSheet.create({
     container: {
-      marginTop: 50, 
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: ThemeColor.PRIMARY_THIN,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    title: {
+      color: ThemeColor.PRIMARY_TEXT,
+      fontSize: 23, 
+      fontFamily:"Berlin Sans FB Regular"
     },
     input: {
       backgroundColor: ThemeColor.PRIMARY,
@@ -38,7 +49,8 @@ const styles = StyleSheet.create({
     },
     inputText: {
       color: '#FFFFFF',
-      fontSize: 15
+      fontSize: 16, 
+      fontFamily:"Berlin Sans FB Regular"
     },
     
   });
