@@ -3,12 +3,12 @@ import React from "react";
 import { View, StyleSheet, Text, ColorValue } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { ThemeColor } from "../../../theme";
-import { DataTask } from "../../../types/types";
+import { SimpleTask, DataTask } from "../../../types/types";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from "react";
 
 type PropsTask = {
-    theTask : DataTask,
+    theTask : SimpleTask,
     changeStateTask: (task: DataTask, isChecked: boolean) => void,
     openTask: (task: DataTask) => void,
 }

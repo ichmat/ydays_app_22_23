@@ -1,16 +1,17 @@
 import { Pressable } from "@react-native-material/core";
 import React from "react";
-import { View, StyleSheet, Text, ColorValue } from "react-native";
+import { View, StyleSheet, Text, AppRegistry, ColorValue } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { ThemeColor } from "../../../theme";
-import { DataTask } from "../../../types/types";
+import { ProgressTask } from "../../../types/types";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from "react";
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 type PropsTaskProgress = {
-    theTask : DataTask,
-    changeStateTask: (task: DataTask, isChecked: boolean) => void,
-    openTask: (task: DataTask) => void,
+    theTask : ProgressTask,
+    changeStateTask: (task: ProgressTask, isChecked: boolean) => void,
+    openTask: (task: ProgressTask) => void,
 }
 
 const MAX_TITLE_CHAR : number = 31
@@ -18,11 +19,23 @@ const MAX_DESC_CHAR : number = 50
 
 const TaskProgress = (props : PropsTaskProgress) => {
     const [progress, setProgress] = useState<number>(50)
-    // couleur du `BouncyCheckbox`
+
+    /*return (
+        <View style={styles.containerTask}>
+            <MultiSlider
+                values={[progress]}
+                min={0}
+                max={100}
+                onValuesChange={(values) => {setProgress(values[0])}}
+            />
+            <Text>Value: {progress}</Text>
+        </View>
+    )*/
+
     return (
         <Pressable pressEffect="none" pressEffectColor="#00000000" onPress={() => {props.openTask(props.theTask)}}>
             
-            <View style={[styles.containerTask]}>
+            <View style={styles.containerTask}>
                 <View style={{
                     position: 'absolute',
                     top:0,
@@ -35,6 +48,14 @@ const TaskProgress = (props : PropsTaskProgress) => {
                 <View style={styles.containerTitle}>
                     <Text style={styles.title}>{props.theTask.titre.length > MAX_TITLE_CHAR ? props.theTask.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : props.theTask.titre}</Text>
                     <Text style={styles.desc}>{props.theTask.description.length > MAX_DESC_CHAR ?  props.theTask.description.substring(0,MAX_DESC_CHAR-3) + '...' : props.theTask.description}</Text>
+                </View>
+                <View>
+                    <MultiSlider
+                        values={[progress]}
+                        min={0}
+                        max={100}
+                        onValuesChange={(values) => {setProgress(values[0])}}
+                    />
                 </View>
                 <View style={{flex:1}}>
                     <Text style={styles.progressText}>{progress}%</Text>

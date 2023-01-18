@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
-import { DataTask } from '../../../types/types';
+import { DataTask, SimpleTask, ProgressTask } from '../../../types/types';
 import uuid from 'react-native-uuid';
 import useStorage from '../useStorage';
 
 const useTasks = () => {
     const {getTasks, saveTasks} = useStorage()
-    const [tasks, setTasks] = useState<DataTask[]>([{id: uuid.v4() as string,titre: "title", description: "description", isFinished: false}]);
+    const [tasks, setTasks] = useState<DataTask[]>([]);
     const [tasksLoaded, setTasksLoaded] = useState<boolean>(false)
     useEffect(() => {
         getTasks().then((value : DataTask[]) => {
@@ -16,9 +16,16 @@ const useTasks = () => {
         })
     }, [])
 
-    const createTask = (title: string, description: string, checked : boolean = false) => {
-        const newTask : DataTask = {id: uuid.v4() as string, titre: title, description: description, isFinished: checked} 
-        const newTasks : DataTask[] =tasks.concat(newTask);
+    const createSimpleTask = (title: string, description: string, checked : boolean = false) => {
+        const newTask : SimpleTask = new SimpleTask(uuid.v4() as string, title, description, checked)
+        const newTasks : DataTask[] = tasks.concat(newTask);
+        setTasks(newTasks)
+        saveTasks(newTasks)
+    };
+
+    const createProgressTask = (title: string, description: string, progress: number = 0, checked : boolean = false) => {
+        const newTask : ProgressTask = new ProgressTask(uuid.v4() as string, title, description, checked, progress)
+        const newTasks : DataTask[] = tasks.concat(newTask);
         setTasks(newTasks)
         saveTasks(newTasks)
     };
@@ -42,7 +49,8 @@ const useTasks = () => {
     return {
         tasksLoaded,
         tasks,
-        createTask,
+        createSimpleTask,
+        createProgressTask,
         updateTask,
         removeTask,
     }

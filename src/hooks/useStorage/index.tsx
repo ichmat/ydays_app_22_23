@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DataTask } from '../../../types/types';
 
-const KEY_TASKS = "storage_tasks"
+const KEY_TASKS = "storage_tasks_v2"
 
 const useStorage = () => {
 
