@@ -5,8 +5,8 @@ export type MonObject = {
     test : number
 }
 
-export type toDoList = {
+export type DataTask = {
+    id: string,
     titre : string,
-    etat : boolean,
-    suppr : Button
+    etat : boolean
 }
