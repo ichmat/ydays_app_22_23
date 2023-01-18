@@ -4,8 +4,7 @@ import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { ThemeColor } from '../../../theme';
 import { Stack, Pressable, IconButton, AppBar, FAB } from "@react-native-material/core";
 import React from 'react';
-
-
+import {Bar} from 'react-native-progress';
 
 const Home = (HomeProp: any) => {
   const navTabUpdate = HomeProp.route.params.navTabUpdate;
@@ -14,12 +13,13 @@ const Home = (HomeProp: any) => {
     navTabUpdate(to)
     HomeProp.navigation.navigate(to)
   }
-
+  
   return (
     <View style={styles.container}>
-        <Text style={styles.title}> Welcome ! </Text>
+        <Text style={styles.title}> Welcome ! Welcome </Text>
+        <Bar progress={1} width={400} height={15}/>
     </View>
-  ); 
+  );
 }
 
 const styles = StyleSheet.create({

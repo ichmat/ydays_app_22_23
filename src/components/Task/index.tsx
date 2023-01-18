@@ -17,13 +17,24 @@ const MAX_TITLE_CHAR : number = 31
 const MAX_DESC_CHAR : number = 50
 
 const Task = (props : PropsTask) => {
+    // couleur du `BouncyCheckbox`
     const [colorChecked, setColorChecked] = useState<ColorValue>(props.theTask.isFinished ? '#634C4C' : "#00000000")
+    // couleur de l'arrière plan de la tâche
     const [colorBG,setColorBG] = useState<ColorValue>(props.theTask.isFinished ? '#634C4C' : '#585858')
 
+    // quand la tâche change d'état
     const changeState = (isChecked: boolean) => {
+        // appel la fonction définit dans les props pour changer l'état de la tâche
         props.changeStateTask(props.theTask, isChecked);
+        // change la couleur du `BouncyCheckbox`
         setColorChecked(isChecked ? '#634C4C' : "#00000000")
-        setColorBG(isChecked ? '#634C4C' : '#585858')
+        setColorBG(isChecked ? '#634C4C' : '#585858') 
+
+        /*if(isChecked){
+            setColorBG('#634C4C') // rouge
+        }else{
+            setColorBG('#585858') // gris
+        }*/
     }
     return (
     <Pressable pressEffect="none" pressEffectColor="#00000000" onPress={() => {props.openTask(props.theTask)}}>
@@ -47,6 +58,7 @@ const Task = (props : PropsTask) => {
 }
 // checked : #634C4C not checked : #585858
 const styles = StyleSheet.create({
+    // style 
     containerTask: {
         backgroundColor: '#585858',
         padding:5,

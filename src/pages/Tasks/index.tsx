@@ -4,7 +4,7 @@ import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { DataTask } from '../../../types/types';
 import { useTasks } from '../../hooks';
-import { Task } from '../../components';
+import { Task ,TaskProgress } from '../../components';
 import { Pressable, TextInput } from '@react-native-material/core';
 import { ThemeColor } from '../../../theme';
 import { ActivityIndicator } from "@react-native-material/core";
@@ -72,8 +72,69 @@ const Tasks = (TaskProps : any) => {
   }
 
   return (
+
+    // regular view
+    /*<View style={styles.container}>
+      <View style={styles.containterTask}>
+        {tasks.map((task: DataTask, index: number) => (
+          <Task key={index} theTask={task} openTask={openTaskDetail} changeStateTask={changeState} />
+        ))}
+      </View>
+      <Pressable pressEffect='ripple' pressEffectColor='#00000000' onPress={() => (openModal())} style={styles.floatingInput}>
+          <FontAwesome color={'#505050'} size={25} name='plus'/>
+      </Pressable>
+      <Modal animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}>
+        <View style={styles.containerModal}>
+          <Text style={{fontSize:20, margin: 10, color:'#FFFFFF'}}>Créer tâche</Text>
+          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
+          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
+          <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
+            <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
+              <Text style={styles.buttonTxt}>Créer</Text>
+            </Pressable>
+            <Pressable style={styles.button} pressEffect='ripple' onPress={() => {setModalVisible(!modalVisible)}}>
+              <Text style={styles.buttonTxt}>Annuler</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal animationType='slide'
+      transparent={true}
+      visible={taskModalVisible}
+      onRequestClose={() => {
+        setTaskModalVisible(!taskModalVisible);
+      }}
+      >
+        <View style={styles.containerModal}>
+          <Text style={{fontSize:20, margin: 10, color:'#FFFFFF'}}>Modifier tâche</Text>
+          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput}/>
+          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
+          <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
+            <Pressable style={styles.button} pressEffect='ripple' onPress={() => {modifyTask()}}>
+              <Text style={styles.buttonTxt}>Modifier</Text>
+            </Pressable>
+            <Pressable style={styles.button} pressEffect='ripple' onPress={() => {setTaskModalVisible(!taskModalVisible)}}>
+              <Text style={styles.buttonTxt}>Annuler</Text>
+            </Pressable>
+          </View>
+          <Pressable style={styles.buttonDelete} pressEffect='ripple' onPress={() => {deleteTask()}}>
+            <Text style={styles.buttonTxt}>Supprimer</Text>
+          </Pressable>
+        </View>
+      </Modal>
+    </View>*/
+
+
+    // % view
     <View style={styles.container}>
       <View style={styles.containterTask}>
+        <TaskProgress openTask={(task) => {}} theTask={{id:"45", titre:"titre", description:"desc", isFinished:false}} changeStateTask={(task, ischecked) => {}} />
         {tasks.map((task: DataTask, index: number) => (
           <Task key={index} theTask={task} openTask={openTaskDetail} changeStateTask={changeState} />
         ))}
