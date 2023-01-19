@@ -16,8 +16,7 @@ const Home = (HomeProp: any) => {
   
   return (
     <View style={styles.container}>
-        <Text style={styles.title}> Welcome ! Welcome </Text>
-        <Bar progress={1} width={400} height={15}/>
+        <Text style={styles.title}> Welcome ! </Text>
     </View>
   );
 }

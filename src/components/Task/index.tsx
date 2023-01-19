@@ -13,28 +13,22 @@ type PropsTask = {
     openTask: (task: DataTask) => void,
 }
 
-const MAX_TITLE_CHAR : number = 31
-const MAX_DESC_CHAR : number = 50
+const MAX_TITLE_CHAR : number = 27
+const MAX_DESC_CHAR : number = 45
 
 const Task = (props : PropsTask) => {
     // couleur du `BouncyCheckbox`
-    const [colorChecked, setColorChecked] = useState<ColorValue>(props.theTask.isFinished ? '#634C4C' : "#00000000")
+    const [colorChecked, setColorChecked] = useState<ColorValue>(props.theTask.isFinished ? ThemeColor.PRIMARY : "#00000000")
     // couleur de l'arrière plan de la tâche
-    const [colorBG,setColorBG] = useState<ColorValue>(props.theTask.isFinished ? '#634C4C' : '#585858')
+    const [colorBG,setColorBG] = useState<ColorValue>(props.theTask.isFinished ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY) 
 
     // quand la tâche change d'état
     const changeState = (isChecked: boolean) => {
         // appel la fonction définit dans les props pour changer l'état de la tâche
         props.changeStateTask(props.theTask, isChecked);
         // change la couleur du `BouncyCheckbox`
-        setColorChecked(isChecked ? '#634C4C' : "#00000000")
-        setColorBG(isChecked ? '#634C4C' : '#585858') 
-
-        /*if(isChecked){
-            setColorBG('#634C4C') // rouge
-        }else{
-            setColorBG('#585858') // gris
-        }*/
+        setColorChecked(isChecked ? ThemeColor.PRIMARY_SHADE : "#00000000")
+        setColorBG(isChecked ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY) 
     }
     return (
     <Pressable pressEffect="none" pressEffectColor="#00000000" onPress={() => {props.openTask(props.theTask)}}>
@@ -49,26 +43,26 @@ const Task = (props : PropsTask) => {
                     innerIconStyle={{borderWidth:2}}
                     unfillColor="#00000000"
                     iconComponent={<FontAwesome size={18} name="check" color={colorChecked} />}
-                    fillColor={ThemeColor.RED}
+                    fillColor={ThemeColor.PRIMARY}
                     isChecked={props.theTask.isFinished} onPress={changeState} />
             </View>
         </View>
     </Pressable>
     );
 }
-// checked : #634C4C not checked : #585858
+
 const styles = StyleSheet.create({
     // style 
     containerTask: {
-        backgroundColor: '#585858',
+        backgroundColor:ThemeColor.PRIMARY,
         padding:5,
-        height:50,
-        minWidth:200,
+        height:60,
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
         borderWidth: 0,
-        marginBottom:2
+        marginBottom:2,
+        borderRadius: 10
     },
     containerTitle:{
         justifyContent: 'center',

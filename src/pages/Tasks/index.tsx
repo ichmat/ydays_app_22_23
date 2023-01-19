@@ -108,7 +108,7 @@ const Tasks = (TaskProps : any) => {
         })}
       </View>
       <Pressable pressEffect='ripple' pressEffectColor='#00000000' onPress={() => (openModal())} style={styles.floatingInput}>
-          <FontAwesome color={'#505050'} size={25} name='plus'/>
+          <FontAwesome color={ThemeColor.PRIMARY_TEXT} size={25} name='plus'/>
       </Pressable>
       <Modal animationType="slide"
       transparent={true}
@@ -117,7 +117,7 @@ const Tasks = (TaskProps : any) => {
         setModalVisible(!modalVisible);
       }}>
         <View style={styles.containerModal}>
-          <Text style={{fontSize:20, margin: 10, color:'#FFFFFF'}}>Créer tâche</Text>
+          <Text style={{fontSize:20, margin: 10, color:ThemeColor.PRIMARY_TEXT}}>Créer tâche</Text>
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
           <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
@@ -139,7 +139,7 @@ const Tasks = (TaskProps : any) => {
       }}
       >
         <View style={styles.containerModal}>
-          <Text style={{fontSize:20, margin: 10, color:'#FFFFFF'}}>Modifier tâche</Text>
+          <Text style={{fontSize:20, margin: 10, color:ThemeColor.PRIMARY_TEXT}}>Modifier tâche</Text>
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput}/>
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
           <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
@@ -168,13 +168,15 @@ const styles = StyleSheet.create({
     containterTask:  {
       alignItems: 'stretch',
       justifyContent: 'center',
-      flex: 3
+      flex: 3,
+      marginLeft: 10,
+      marginRight: 10
     },
     containerModal:{
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: ThemeColor.PRIMARY,
+      backgroundColor: ThemeColor.PRIMARY_SHADE,
       opacity:0.75
     },
     modalTextInput:{
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
       minWidth: 120,
       minHeight: 30,
       padding: 5,
-      backgroundColor: ThemeColor.PRIMARY_THIN,
+      backgroundColor: ThemeColor.BLACK,
       borderRadius: 5,
       margin: 5,
       alignItems: 'center',

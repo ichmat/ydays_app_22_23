@@ -1,14 +1,14 @@
 export enum ThemeColor {
-    PRIMARY = '#2B2A2A', // #36393F
-    PRIMARY_SHADE = '#26292F',
-    PRIMARY_THIN = '#4B4B4B', //'#46494F'
-    PRIMARY_LIGHT = '#969A9F',
-    PRIMARY_TEXT = '#B2B2B2',
+    PRIMARY = '#E0E0E0',
+    PRIMARY_SHADE = '#909090',
+    PRIMARY_THIN = '#F0F0F0', 
+    PRIMARY_LIGHT = '#C9C9C9',
+    PRIMARY_TEXT = '#000000',
     SECONDARY_TEXT = '#C0C0C0',
     TERTIARY_TEXT = '#A0A0A0',
     SUCCESS = '#75C54A',
     WARNING = '#FF9671',
     DANGER = '#F04343',
-    WHITE = '#F0F0F0',
-    RED = '#D80000'
+    WHITE = '#FFFFFF',
+    BLACK = '#303030'
 }

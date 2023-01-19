@@ -104,17 +104,18 @@ export default function App() {
             }}
           />
         </Stack.Navigator>
-          
       </NavigationContainer>
       <View style={{backgroundColor:ThemeColor.PRIMARY ,margin:0, height:70, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
-        <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome5 name='gift' style={styles.icon} size={40} color={ actualNavigation == "Gift" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome5 name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.DANGER : ThemeColor.PRIMARY_THIN} />
+        <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome5 name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
       </View>
     </View>
   );
 }
+/*
+        <FontAwesome5 name='gift' style={styles.icon} size={40} color={ actualNavigation == "Gift" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+*/
 
 const styles = StyleSheet.create({
   container: {
