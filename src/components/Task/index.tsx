@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         minWidth: 200,
         maxWidth: 300,
-        fontFamily:"Berlin Sans FB Regular",
+        //fontFamily:"Berlin Sans FB Regular",
         color: ThemeColor.PRIMARY_TEXT
     },
     desc:{
         fontSize: 12,
         opacity: 0.69,
-        fontFamily:"Berlin Sans FB Regular",
+        //fontFamily:"Berlin Sans FB Regular",
         color: ThemeColor.PRIMARY_TEXT
     }
   });

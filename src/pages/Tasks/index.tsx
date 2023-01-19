@@ -118,8 +118,8 @@ const Tasks = (TaskProps : any) => {
       }}>
         <View style={styles.containerModal}>
           <Text style={{fontSize:20, margin: 10, color:ThemeColor.PRIMARY_TEXT}}>Créer tâche</Text>
-          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
-          <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
+          <TextInput style={{minWidth:250}} variant='standard' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.SECONDARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
+          <TextInput style={{minWidth:250}} variant='standard' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.SECONDARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
           <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
               <Text style={styles.buttonTxt}>Créer</Text>

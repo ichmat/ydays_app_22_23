@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ydays_app_22_23",
-    "slug": "ydays_app_22_23",
+    "name": "eveil",
+    "slug": "eveil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2B2A2A"
-      }
+      },
+      "package": "com.ynov.eveil"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "23ae6781-2795-44dc-a3be-f17f099b2605"
+      }
     }
   }
 }

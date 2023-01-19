@@ -9,9 +9,10 @@ import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-materia
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useFonts } from 'expo-font';
 import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from './src/hooks';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,13 +24,15 @@ export default function App() {
   const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(false)
   const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("")
   const [actualNavigation, setActualNavigation] = useState<string>("Home")
-  /*const [fontsLoaded, fontError] = useFonts({
-    'BerlinSansFB' : require("./assets/fonts/Berlin Sans FB Regular.ttf"),
-  });*/
+  const [IsReady, SetIsReady] = useState(false);
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
 
   useEffect(() => {
     //console.log('loaded : ' + fontsLoaded)
-    if(/* fontsLoaded && */ navigation != undefined && navigation.current.isReady()){
+    if(IsReady && navigation != undefined && navigation.current.isReady()){
       setNavIsReady(true)
       setActualNavigation(navigation.current.getCurrentRoute().name)
       if(isWaitingChangingLocaltion){
@@ -40,7 +43,7 @@ export default function App() {
         navTabUpdate(location)
       }
     }
-  }, [/*fontsLoaded, */ navigation])
+  }, [IsReady, navigation])
 
   const navigate = (to : string) => {
     if(navIsReady){
@@ -56,10 +59,14 @@ export default function App() {
     setActualNavigation(page)
   }
 
-  if (!true) {
+  if (!IsReady) {
     return (
       <View style={{ flex: 1, justifyContent:'center', alignItems:'center' , backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
-        <ActivityIndicator size={40} color={ThemeColor.PRIMARY_LIGHT} />
+        <AppLoading
+          startAsync={LoadFonts}
+          onFinish={() => SetIsReady(true)}
+          onError={() => {}}
+        />
       </View>
     )
   }

@@ -5,15 +5,19 @@ import { ThemeColor } from '../../../theme';
 import { Stack, Pressable, IconButton, AppBar, FAB } from "@react-native-material/core";
 import React from 'react';
 import {Bar} from 'react-native-progress';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from '../../hooks';
 
 const Home = (HomeProp: any) => {
   const navTabUpdate = HomeProp.route.params.navTabUpdate;
+
+  const [IsReady, SetIsReady] = useState(false);
 
   const navigate = (to: string) => {
     navTabUpdate(to)
     HomeProp.navigation.navigate(to)
   }
-  
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}> Welcome ! </Text>
@@ -31,7 +35,7 @@ const styles = StyleSheet.create({
     title: {
       color: ThemeColor.PRIMARY_TEXT,
       fontSize: 23, 
-      fontFamily:"Berlin Sans FB Regular"
+      //fontFamily:"Berlin Sans FB Regular"
     },
     input: {
       backgroundColor: ThemeColor.PRIMARY,
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
     inputText: {
       color: '#FFFFFF',
       fontSize: 16, 
-      fontFamily:"Berlin Sans FB Regular"
+      //fontFamily:"Berlin Sans FB Regular"
     },
     
   });
