@@ -110,6 +110,7 @@ const Tasks = (TaskProps : any) => {
       <Pressable pressEffect='ripple' pressEffectColor='#00000000' onPress={() => (openModal())} style={styles.floatingInput}>
           <FontAwesome color={ThemeColor.PRIMARY_TEXT} size={25} name='plus'/>
       </Pressable>
+      
       <Modal animationType="slide"
       transparent={true}
       visible={modalVisible}

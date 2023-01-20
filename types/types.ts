@@ -92,28 +92,35 @@ export class RecurrentTask {
     description : string
     isFinished : boolean
     isEditable: boolean
+    startTask : Date
+    endTask : Date
 
-    constructor(id: string, titre: string, description: string, isFinished: boolean, type: TypeTask, isEditable: boolean){
+    constructor(id: string, titre: string, description: string, isFinished: boolean, 
+        type: TypeTask, isEditable: boolean, startTask: Date, endTask: Date){
         this.id = id
         this.titre = titre
         this.description = description
         this.isFinished = isFinished
         this.typeTask = type
         this.isEditable = isEditable
+        this.startTask = startTask
+        this.endTask = endTask
     }
 }
 
 export class SimpleTask extends DataTask {
-    constructor(id: string, titre: string, description: string, isFinished: boolean, isEditable: boolean){
-        super(id, titre, description, isFinished, TypeTask.Simple, isEditable)
+    constructor(id: string, titre: string, description: string, isFinished: boolean, isEditable: boolean, 
+        startTask: Date, endTask: Date){
+        super(id, titre, description, isFinished, TypeTask.Simple, isEditable, startTask, endTask)
     }
 }
 
 export class ProgressTask extends DataTask {
     progress: number
 
-    constructor(id: string, titre: string, description: string, isFinished: boolean, progress: number, isEditable: boolean){
-        super(id, titre, description, isFinished, TypeTask.Progress, isEditable)
+    constructor(id: string, titre: string, description: string, isFinished: boolean, progress: number, isEditable: boolean,
+        startTask: Date, endTask: Date){
+        super(id, titre, description, isFinished, TypeTask.Progress, isEditable, startTask, endTask)
         this.progress = progress;
     }
 }
