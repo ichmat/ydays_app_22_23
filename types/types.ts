@@ -3,23 +3,39 @@ export enum TypeTask {
     Progress
 }
 
+export enum FrequencyEvery{
+    NULL,
+    DAY,
+    WEEK,
+    MONTH,
+    YEAR
+}
+
+export enum WEEKDAY{
+    MONDAY = 0,
+    THUESDAY = 1,
+    WEDNESDAY = 2,
+    THURSDAY = 3,
+    FRIDAY = 4,
+    SATURDAY = 5,
+    SUNDAY = 6
+}
+
 export class Frequency {
     // the occurence between new task
     occurence: number
-    // if `isEveryMonth` and `isEveryYear` are  false : `occurence` will be the number of day
-    // if `isEveryMonth` is true  : `occurence` will be the number of day at the start of the month
-    // if `isEveryYear` is true  : `occurence` will be the number of day at the start of the year
-    isEveryMonth: boolean
-    isEveryYear: boolean
+    // if `DAY` and `WEEK` : `occurence` will be the number of day
+    // if `MONTH`          : `occurence` will be the number of day at the start of the month
+    // if `YEAR`           : `occurence` will be the number of day at the start of the year
+    every: FrequencyEvery
     // when the frequence start to create
     frequenceStart: Date
     // when the frequence end
     frequenceEnd: Date
 
-    constructor(occurence: number, isEveryMonth: boolean, isEveryYear: boolean, frequenceStart: Date, frequenceEnd: Date){
+    constructor(occurence: number, every: FrequencyEvery, frequenceStart: Date, frequenceEnd: Date){
         this.occurence = occurence
-        this.isEveryMonth = isEveryMonth
-        this.isEveryYear = isEveryYear
+        this.every = every
         this.frequenceStart = frequenceStart
         this.frequenceEnd = frequenceEnd
     }
@@ -32,7 +48,7 @@ export class Frequency {
     }
 
     public static everyDayWithDate (dayOccurence: number, frequenceStart: Date, frequenceEnd: Date) : Frequency  {
-        return new Frequency(dayOccurence, false, false, frequenceStart, frequenceEnd);
+        return new Frequency(dayOccurence, FrequencyEvery.DAY, frequenceStart, frequenceEnd);
     }
 
     public static everyWeek (nbWeedEnd: number, weekOccurence: number = 1) : Frequency  {
@@ -43,7 +59,7 @@ export class Frequency {
     }
 
     public static everyWeekWithDate (weekOccurence: number, frequenceStart: Date, frequenceEnd: Date) : Frequency  {
-        return new Frequency(weekOccurence * 7, false, false, frequenceStart, frequenceEnd)
+        return new Frequency(weekOccurence * 7, FrequencyEvery.WEEK, frequenceStart, frequenceEnd)
     }
 
     public static everyMonth (nbMonthEnd: number, numberDayOfMonth: number = 1) : Frequency  {
@@ -54,7 +70,7 @@ export class Frequency {
     }
 
     public static everyMonthWithDate (numberDayOfMonth: number, frequenceStart: Date, frequenceEnd: Date) : Frequency  {
-        return new Frequency(numberDayOfMonth, true, false, frequenceStart, frequenceEnd);
+        return new Frequency(numberDayOfMonth, FrequencyEvery.MONTH, frequenceStart, frequenceEnd);
     }
 
     public static everyYear (nbYear: number, numberDayOfYear: number) : Frequency {
@@ -65,7 +81,7 @@ export class Frequency {
     }
 
     public static everyYearWithDate (numberDayOfYear: number, frequenceStart: Date, frequenceEnd: Date) : Frequency  {
-        return new Frequency(numberDayOfYear, false, true, frequenceStart, frequenceEnd )
+        return new Frequency(numberDayOfYear, FrequencyEvery.YEAR, frequenceStart, frequenceEnd )
     }
 }
 

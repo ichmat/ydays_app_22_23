@@ -7,6 +7,7 @@ import React from 'react';
 import {Bar} from 'react-native-progress';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '../../hooks';
+import { FrequencySelector } from '../../components';
 
 const Home = (HomeProp: any) => {
   const navTabUpdate = HomeProp.route.params.navTabUpdate;
@@ -21,6 +22,7 @@ const Home = (HomeProp: any) => {
   return (
     <View style={styles.container}>
         <Text style={styles.title}> Welcome ! </Text>
+        <FrequencySelector changeFrequency={(freq) => {}} />
     </View>
   );
 }

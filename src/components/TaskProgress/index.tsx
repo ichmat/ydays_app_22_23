@@ -1,6 +1,6 @@
-import { Pressable } from "@react-native-material/core";
+import { Pressable as PressMaterial } from "@react-native-material/core";
 import React from "react";
-import { View, StyleSheet, Text, AppRegistry, ColorValue, FlexStyle } from "react-native";
+import { View, StyleSheet, Text, AppRegistry, ColorValue, FlexStyle, Pressable } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { ThemeColor } from "../../../theme";
 import { ProgressTask } from "../../../types/types";
@@ -43,7 +43,7 @@ const TaskProgress = (props : PropsTaskProgress) => {
     }
 
     return (
-        <Pressable pressEffect="none" pressEffectColor="#00000000" onPress={() => {props.openTask(props.theTask)}}>
+        <Pressable onPress={openSlider} onLongPress={() => {props.openTask(props.theTask)}}>
             <View style={styles.containerTask}>
                 <View style={{
                     position: 'absolute',
@@ -80,7 +80,7 @@ const TaskProgress = (props : PropsTaskProgress) => {
                             onValuesChange={(values) => {setProgress(values[0])}}
                         />
                 </View>
-                <Pressable pressEffectColor="#00000000" pressEffect="ripple" onPress={openSlider} style={[{flex:1},elementVisibility]}>
+                <Pressable onPress={openSlider} style={[{flex:1},elementVisibility]}>
                     <Text style={styles.progressText}>{progress}%</Text>
                 </Pressable>
             </View>

@@ -1,6 +1,6 @@
-import { Pressable } from "@react-native-material/core";
+import { Pressable as PressMaterial }  from "@react-native-material/core";
 import React from "react";
-import { View, StyleSheet, Text, ColorValue } from "react-native";
+import { View, StyleSheet, Text, ColorValue, Pressable } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { ThemeColor } from "../../../theme";
 import { SimpleTask, DataTask } from "../../../types/types";
@@ -31,7 +31,7 @@ const Task = (props : PropsTask) => {
         setColorBG(isChecked ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY) 
     }
     return (
-    <Pressable pressEffect="none" pressEffectColor="#00000000" onPress={() => {props.openTask(props.theTask)}}>
+    <Pressable onLongPress={() => {props.openTask(props.theTask)}}>
         <View style={[styles.containerTask,{backgroundColor : colorBG}]}>
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>{props.theTask.titre.length > MAX_TITLE_CHAR ? props.theTask.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : props.theTask.titre}</Text>
