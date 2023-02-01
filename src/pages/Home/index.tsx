@@ -22,7 +22,7 @@ const Home = (HomeProp: any) => {
   return (
     <View style={styles.container}>
         <Text style={styles.title}> Welcome ! </Text>
-        <FrequencySelector changeFrequency={(freq) => {}} />
+        <FrequencySelector NotReady={() => {}} ReadyAndchangeFrequency={(freq) => {}} />
     </View>
   );
 }

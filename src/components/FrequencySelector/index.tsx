@@ -22,12 +22,20 @@ enum SelectedEnd {
 }
 
 type PropsFrequencySelector = {
-    changeFrequency: (frequencies : Frequency[]) => void,
+    ReadyAndchangeFrequency: (frequencies : Frequency[]) => void,
+    NotReady: () => void,
+    Debug?: (message: string) => void
 }
 
 const locales = ['en', 'fr'] as const;
 
 const FrequencySelector = (props: PropsFrequencySelector) => {
+
+    const {ReadyAndchangeFrequency, NotReady} = props
+
+    const [isReady,setIsReady] = useState<boolean>(false)
+
+    
 
     //#region PROPS
 
@@ -45,12 +53,12 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
         {label: 'Tous les X mois', value: FrequencyEvery.MONTH},
         {label: 'Tous les X année', value: FrequencyEvery.YEAR},
       ])
-    // occurence (en string pour qui puisse être modifiable)
-    const [occurence, setOccurence] = useState<string>("")
+    // occurence (tous les X jours/semaine/mois/année)
+    const [occurence, setOccurence] = useState<number>(1)
     // visibilité de la `TextInput` pour l'occurence
     const [occurenceEditable, setOccurenceEditable] = useState<boolean>(true)
     // change l'opacité du `TextInput` pour l'occurence
-    const [occurenceOpacity, setOccurenceOpacity] = useState<ViewStyle>({opacity: 1})
+    const [occurenceOpacity, setOccurenceOpacity] = useState<string>("{opacity: 1}")
     
     //#endregion
 
@@ -67,6 +75,15 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
 
     //#endregion
 
+    //#region NUMDAY
+
+    const [selectNumDayVisible, setSelectNumDayVisible] = useState<boolean>(false)
+    // le jour du mois ou de l'année séléctionné 
+    const [dayNum,setDayNum] = useState<number>(1)
+    const [labelDayNum, setLabelDayNum] = useState<string>("")
+
+    //#endregion
+
     //#region END
 
     // la visibilité du container `end` ("se termine : ")
@@ -78,21 +95,124 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
         dayjs(new Date(Date.now())),
       );
     // langue du selecteur de date
-    const [locale, setLocale] = useState<typeof locales[number]>('fr');
-    const [nbTaskToCreate, setNbTaskToCreate] = useState<string>()
+    const [locale, setLocale] = useState<typeof locales[number]>('fr')
+    // nombre de tâche à créer
+    const [nbTaskToCreate, setNbTaskToCreate] = useState<number>(0)
     
 
     //#endregion
 
     //#endregion
     
+    useEffect(() => {
+        if(dropDownSelected != FrequencyEvery.NULL && !isEndReady()){
+            setNotReady()
+        }else{
+            switch(dropDownSelected){
+                case FrequencyEvery.NULL:
+                    ReadyAndchangeFrequency([])
+                    break;
+                case FrequencyEvery.DAY:
+                    break;
+                case FrequencyEvery.WEEK:
+                    if(weekDaySelected.length > 0){
+
+                    }else{
+                        setNotReady()
+                    }
+                    break;
+                case FrequencyEvery.MONTH:
+                    break;
+                case FrequencyEvery.YEAR:
+                    break;
+            }
+        }
+    },[dropDownSelected, occurence, weekDaySelected, dayNum, selectedTypeEnd, dateValueEnd, nbTaskToCreate])
+
+    const setNotReady = () => {
+        if(isReady){
+            setIsReady(false)
+            NotReady()
+        }
+    }
+
+    const isEndReady = () : boolean => {
+        if(selectedTypeEnd == SelectedEnd.ENDDATE){
+            if(dateValueEnd == null) {
+                return false
+            }
+            const now: Date = new Date( Date.now())
+            now.setDate(now.getDate() + 1)
+
+            return (dateValueEnd.toDate() >= now) && occurence > 0
+        }else{
+            return nbTaskToCreate > 0 && occurence > 0
+        }
+    }
+
+    // récupère la fin de la répétition
+    const getEndDate = () : Date => {
+        if(selectedTypeEnd == SelectedEnd.ENDDATE){
+            // si l'utilisateur a spécifié une date de fin on la renvoie
+            return dateValueEnd!.toDate()
+        }else{
+            // on va pré-calculer la date de fin à partir de l'occurrence et du nombre de tâche
+            let dateEnd : Date = Frequency.dateOnly(new Date(Date.now()))
+            switch(dropDownSelected){
+                case FrequencyEvery.DAY:
+                    dateEnd.setDate(dateEnd.getDate() + ((nbTaskToCreate-1) * occurence))
+                    break;
+                case FrequencyEvery.WEEK:
+                    let nbTask = 0
+                    let doNotCountFirst: boolean = false
+                    // on cherche à trouver la date de fin par rapport par rapport aux jours de la semaine sélectionnés
+                    // on boucle tant que l'on a pas compter le nombre de tâches nécessaire
+                    while(nbTask < nbTaskToCreate){
+                        if(occurence > 1 // si l'utilisateur demande une occurence (Toute les 2 semaines par exemple)
+                            && dateEnd.getDay() == 0 ){ // on vérifie si on est situé au premier jour de la semaine
+                            if(doNotCountFirst){
+                                doNotCountFirst = false
+                            }else{
+                                // on ajoute le décallage 
+                                dateEnd.setDate(dateEnd.getDate() + 7 * (occurence-1))
+                            }
+                        }
+                        // si le jour de la semaine actuel est un jour sélectionné par l'utilisateur
+                        if(weekDaySelected.findIndex(x => x == dateEnd.getDay()) != -1){
+                            // on compte une tâche créé
+                            nbTask++
+                        }
+                        // incrémentation d'une journée
+                        dateEnd.setDate(dateEnd.getDate() + 1)
+                    }
+                    // on retire une journée pour évité le décallage d'une journée justement. 
+                    dateEnd.setDate(dateEnd.getDate() - 1)
+
+                    if(doNotCountFirst)
+                        doNotCountFirst = false
+                    break;
+                case FrequencyEvery.MONTH:
+                    dateEnd.setMonth(dateEnd.getMonth() + ((nbTaskToCreate-1) * occurence))
+                    break;
+                case FrequencyEvery.YEAR:
+                    dateEnd.setFullYear(dateEnd.getFullYear() + ((nbTaskToCreate-1) * occurence))
+                    break;
+            }
+            return dateEnd
+        }
+    }
+
     const onChangeOccurenceText = (text: string) => {
         // on ne souhaite que des nombre
-        setOccurence(text.replace(/[^0-9]/g, ''))
+        setOccurence(Number(text.replace(/[^0-9]/g, '')))
     }
 
     const onChangeNbTaskText = (text: string) => {
-        setNbTaskToCreate(text.replace(/[^0-9]/g, ''))
+        setNbTaskToCreate(Number(text.replace(/[^0-9]/g, '')))
+    }
+
+    const onChangeDayNum = (text: string) => {
+        setDayNum(Number(text.replace(/[^0-9]/g, '')))
     }
 
     // ajoute ou enlève le jour de la semaine séléctionné
@@ -114,26 +234,33 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                 setOccurenceEditable(false)
                 setWeekDayVisible(false)
                 setEndVisible(false)
+                setSelectNumDayVisible(false)
                 break;
             case FrequencyEvery.DAY:
                 setOccurenceEditable(true)
                 setWeekDayVisible(false)
                 setEndVisible(true)
+                setSelectNumDayVisible(false)
                 break;
             case FrequencyEvery.WEEK:
                 setOccurenceEditable(true)
                 setWeekDayVisible(true)
                 setEndVisible(true)
+                setSelectNumDayVisible(false)
                 break;
             case FrequencyEvery.MONTH:
                 setOccurenceEditable(true)
                 setWeekDayVisible(false)
                 setEndVisible(true)
+                setSelectNumDayVisible(true)
+                setLabelDayNum("N° jour du mois")
                 break;
             case FrequencyEvery.YEAR:
                 setOccurenceEditable(true)
                 setWeekDayVisible(false)
                 setEndVisible(true)
+                setSelectNumDayVisible(true)
+                setLabelDayNum("N° jour de l'année")
                 break;
         }
     }, [dropDownSelected]) 
@@ -155,12 +282,14 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
     useEffect(() => {
         if(occurenceEditable){
             // éclaircir l'input s'il est activé
-            setOccurenceOpacity({opacity: 1})
+            setOccurenceOpacity("{opacity: 1}")
         }else{
             // griser l'input s'il est désactivé
-            setOccurenceOpacity({opacity: 0.6})
+            setOccurenceOpacity("{opacity: 0.6}")
         }
     }, [occurenceEditable])
+
+    
 
     return (
         <View style={styles.container}>
@@ -171,14 +300,13 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
 
             <View style={styles.containerOccurence}>
 
-                <TxtInMaterial
-                    editable={occurenceEditable}
-                    inputContainerStyle={[styles.occurenceInput, occurenceOpacity]}
-                    inputStyle={[styles.occurenceInput, occurenceOpacity]}
-                    style={[styles.occurenceInput, occurenceOpacity]}
+                <TextField
+                    required
+                    disabled={!occurenceEditable}
+                    inputProps={styles.occurenceInput}
                     label="Répéter"
                     value={occurence}
-                    onChangeText={onChangeOccurenceText}
+                    onChange={(event) => onChangeOccurenceText(event.target.value)}
                     variant='outlined'
                     />
 
@@ -195,7 +323,7 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                 />
             </View>
 
-            <View style={[styles.containerLibelleDayWeek, weekDayVisible ? {display:"flex"} :  {display:"none"}]}>
+            <View style={[styles.containerLibelleDayWeek, weekDayVisible || selectNumDayVisible ? {display:"flex"} :  {display:"none"}]}>
                 <Text style={{ alignSelf:'flex-start'}}>
                     Appliquer le : 
                 </Text>
@@ -224,6 +352,10 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                 <Pressable style={buttonWeekStyle[6]} onPress={() => {addOrRemoveDay(WEEKDAY.SUNDAY)}}>
                     <Text style={txtButtonWeekStyle[6]}>Dim</Text>
                 </Pressable>
+            </View>
+
+            <View style={[styles.containerNumSelected, selectNumDayVisible ? {display:"flex"} :  {display:"none"}]}>
+                <TextField value={dayNum} onChange={(event) => onChangeDayNum(event.target.value)} required label={labelDayNum} variant="outlined" />
             </View>
 
             <View style={[styles.containerLibelleEnd, endVisible ? {display:"flex"} :  {display:"none"}]}>
@@ -312,6 +444,12 @@ const styles = StyleSheet.create({
         zIndex: -10
     },
     containerEnd:{
+        flexDirection: 'column',
+        justifyContent:'center',
+        alignItems:'center',
+        zIndex: -10
+    },
+    containerNumSelected:{
         flexDirection: 'column',
         justifyContent:'center',
         alignItems:'center',

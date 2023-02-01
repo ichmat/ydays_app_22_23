@@ -4,7 +4,7 @@ import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animat
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
-import { Home, Tasks } from './src/pages';
+import { Home, Profile, Tasks } from './src/pages';
 import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-material/core";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -110,12 +110,17 @@ export default function App() {
               headerTintColor: ThemeColor.PRIMARY_TEXT,
             }}
           />
+          <Stack.Screen
+            initialParams={{navTabUpdate: navTabUpdate}}
+            name="Profile"
+            component={Profile}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <View style={{backgroundColor:ThemeColor.PRIMARY ,margin:0, height:70, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
         <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
         <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome5 name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome5 onPress={() => {navigate("Profile")}} name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
       </View>
     </View>
   );

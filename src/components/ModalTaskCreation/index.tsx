@@ -42,7 +42,7 @@ const ModalTaskCreation = (props: PropsModalTaskCreation) => {
           <TextInput style={{minWidth:250}} variant='filled' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.TERTIARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
           <TextInput style={{minWidth:250}} variant='filled' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.TERTIARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
           
-          <FrequencySelector  changeFrequency={(freq) => setFrequency(freq)} />
+          <FrequencySelector NotReady={() => {}} ReadyAndchangeFrequency={(freq) => setFrequency(freq)} />
           
           <View style={styles.containerButton}>
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
