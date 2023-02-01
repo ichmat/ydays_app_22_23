@@ -82,3 +82,38 @@ const [text,setText] = useState<string>("rien");
 
 setText("nouveau") // fonction de modif
 ```
+
+**Parcourir un tableau d'élément dans un return**
+
+```TypeScript
+// un exemple de tableau
+const array = [
+    {titre:'monTitre1', description: 'monDescription1'},
+    {titre:'monTitre2', description: 'monDescription2'},
+    {titre:'monTitre3', description: 'monDescription3'},
+    ]
+
+const Page = () => {
+    // code
+
+    return (
+        <View>
+        {
+            array.map((value,index) => {
+                // affichage des éléments
+                return (
+                    <View key={index}>
+                        <Text>{value.titre}</Text>
+                        <Text>{value.description}</Text>
+                    </View>
+                )
+                // à l'utilisation d'une map, il faut toujours préciser une clé `key`. Par défaut, la fonction map possède en deuxième argument l'index de chaque élément.
+            })
+        }
+        </View>
+    )
+}
+```
+
+**ajouter une icone**
+

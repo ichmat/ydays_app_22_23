@@ -4,7 +4,7 @@ import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animat
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
-import { Home, Profile, Tasks } from './src/pages';
+import { Home, Profile, Tasks, Parameter, Inventory } from './src/pages';
 import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-material/core";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,8 +21,8 @@ const Stack = createNativeStackNavigator()
 export default function App() {
   const navigation = useRef<any>(undefined)
   const [navIsReady, setNavIsReady] = useState<boolean>(false)
-  const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(false)
-  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("")
+  const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(true)
+  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("Profile")
   const [actualNavigation, setActualNavigation] = useState<string>("Home")
   const [IsReady, SetIsReady] = useState(false);
 
@@ -81,7 +81,7 @@ export default function App() {
           background: ThemeColor.PRIMARY,
           card: ThemeColor.PRIMARY,
           text: ThemeColor.PRIMARY_TEXT,
-          border: ThemeColor.PRIMARY,
+          border: "#00000000",
           notification: ThemeColor.PRIMARY,
         }
       }
@@ -115,12 +115,36 @@ export default function App() {
             name="Profile"
             component={Profile}
           />
+          <Stack.Screen
+            initialParams={{navTabUpdate: navTabUpdate}}
+            name="Parameter"
+            component={Parameter}
+            options={{
+              headerShown: true,
+              headerTitle: 'Paramètres',
+              headerStyle:{
+                backgroundColor: ThemeColor.PRIMARY_THIN
+              }
+            }}
+          />
+          <Stack.Screen
+            initialParams={{navTabUpdate: navTabUpdate}}
+            name="Inventory"
+            component={Inventory}
+            options={{
+              headerShown: true,
+              headerTitle: 'Inventaire',
+              headerStyle:{
+                backgroundColor: ThemeColor.PRIMARY_THIN,
+              }
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <View style={{backgroundColor:ThemeColor.PRIMARY ,margin:0, height:70, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
         <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
         <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome5 onPress={() => {navigate("Profile")}} name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+        <FontAwesome5 onPress={() => {navigate("Profile")}} name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" || actualNavigation == "Inventory" || actualNavigation == "Parameter" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
       </View>
     </View>
   );
