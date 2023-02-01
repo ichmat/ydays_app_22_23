@@ -10,5 +10,5 @@ export enum ThemeColor {
     WARNING = '#FF9671',
     DANGER = '#F04343',
     WHITE = '#FFFFFF',
-    BLACK = '#303030'
+    BLACK = '#000000'
 }

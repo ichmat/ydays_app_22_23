@@ -9,26 +9,44 @@ import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-materia
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AppLoading from 'expo-app-loading';
-import { useFonts } from './src/hooks';
+import { useFonts } from 'expo-font';
+
+/*
+Auster Black Titre 28px
+//Paralucent demi bold 20px (sous titre ou autre)//
+Paralucent demi bold 16px
+Paralucent medium 14px
+Paralucent medium 12px
+*/
 
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator()
 
+const SelectedColorIcon = ThemeColor.PRIMARY
+const UnselectedColorIcon = ThemeColor.WHITE
+
 export default function App() {
+  const [loaded] = useFonts({
+    'AusterRoundedBlack': require('./assets/fonts/AusterRoundedBlack.ttf'),
+  });
+
   const navigation = useRef<any>(undefined)
   const [navIsReady, setNavIsReady] = useState<boolean>(false)
   const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(true)
-  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("Profile")
-  const [actualNavigation, setActualNavigation] = useState<string>("Home")
-  const [IsReady, SetIsReady] = useState(false);
+  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("Tasks")
+  const [actualNavigation, setActualNavigation] = useState<string>("Tasks")
+  const [IsReady, SetIsReady] = useState<boolean>(false);
 
-  const LoadFonts = async () => {
-    await useFonts();
-  };
+  useEffect(() => {
+    if(loaded){
+      SetIsReady(true)
+    }
+  }, [loaded])
 
   useEffect(() => {
     //console.log('loaded : ' + fontsLoaded)
@@ -62,11 +80,7 @@ export default function App() {
   if (!IsReady) {
     return (
       <View style={{ flex: 1, justifyContent:'center', alignItems:'center' , backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
-        <AppLoading
-          startAsync={LoadFonts}
-          onFinish={() => SetIsReady(true)}
-          onError={() => {}}
-        />
+        <ActivityIndicator />
       </View>
     )
   }
@@ -141,10 +155,10 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <View style={{backgroundColor:ThemeColor.PRIMARY ,margin:0, height:70, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
-        <Ionicons onPress={() => {navigate("Home")}} name='md-home-sharp' style={styles.icon} size={40} color={ navIsReady && actualNavigation == "Home" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome onPress={() => {navigate("Tasks")}} name='check-square-o' style={[styles.icon,{marginTop:5}]} size={45} color={ actualNavigation == "Tasks" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
-        <FontAwesome5 onPress={() => {navigate("Profile")}} name='user-alt' style={styles.icon} size={38} color={ actualNavigation == "Profile" || actualNavigation == "Inventory" || actualNavigation == "Parameter" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
+      <View style={{backgroundColor:ThemeColor.BLACK ,margin:0, height:60, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
+        <Feather onPress={() => {navigate("Home")}} name='home' style={styles.icon} size={30} color={ navIsReady && actualNavigation == "Home" ? SelectedColorIcon : UnselectedColorIcon} />
+        <Feather onPress={() => {navigate("Tasks")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
+        <Feather onPress={() => {navigate("Profile")}} name='user' style={styles.icon} size={30} color={ actualNavigation == "Profile" || actualNavigation == "Inventory" || actualNavigation == "Parameter" ? SelectedColorIcon : UnselectedColorIcon} />
       </View>
     </View>
   );

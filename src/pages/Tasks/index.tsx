@@ -11,6 +11,9 @@ import { ActivityIndicator } from "@react-native-material/core";
 import { SelectList } from 'react-native-dropdown-select-list'
 import { ModalTaskCreation, ModalTaskEdition} from '../../components';
 
+// FONT PRIMARY
+const AusterRoundedBlack = require('../../../assets/fonts/AusterRoundedBlack.ttf');
+
 const Tasks = (TaskProps : any) => {
 
   // navigation personnalisé pour mettre à jour la nav bar
@@ -71,6 +74,7 @@ const Tasks = (TaskProps : any) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.head}>Mes taches</Text>
       <View style={styles.containterTask}>
         {tasks.map((task: DataTask, index: number) => {
           if(task.typeTask == TypeTask.Simple){
@@ -159,6 +163,12 @@ const styles = StyleSheet.create({
       shadowRadius: 4.65,
 
       elevation: 8,
+    },
+    head: {
+      padding: 20,
+      fontSize: 40,
+      fontWeight: 'bold',
+      fontFamily: 'AusterRoundedBlack',
     }
   });
   

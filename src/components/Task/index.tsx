@@ -6,6 +6,7 @@ import { ThemeColor } from "../../../theme";
 import { SimpleTask, DataTask } from "../../../types/types";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from "react";
+import { borderRadius } from "@mui/system";
 
 type PropsTask = {
     theTask : SimpleTask,
@@ -37,52 +38,60 @@ const Task = (props : PropsTask) => {
                 <Text style={styles.title}>{props.theTask.titre.length > MAX_TITLE_CHAR ? props.theTask.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : props.theTask.titre}</Text>
                 <Text style={styles.desc}>{props.theTask.description.length > MAX_DESC_CHAR ?  props.theTask.description.substring(0,MAX_DESC_CHAR-3) + '...' : props.theTask.description}</Text>
             </View>
-            <View style={{flex:1}}>
-                <BouncyCheckbox
+            <View style={styles.bar}>
+                
+            </View>
+        </View>
+    </Pressable>
+    );
+}
+/*<BouncyCheckbox
                     size={30}
                     innerIconStyle={{borderWidth:2}}
                     unfillColor="#00000000"
                     iconComponent={<FontAwesome size={18} name="check" color={colorChecked} />}
                     fillColor={ThemeColor.PRIMARY}
                     isChecked={props.theTask.isFinished} onPress={changeState} />
-            </View>
-        </View>
-    </Pressable>
-    );
-}
+*/
 
 const styles = StyleSheet.create({
     // style 
     containerTask: {
         backgroundColor:ThemeColor.PRIMARY,
         padding:5,
-        height:60,
-        alignItems: 'center',
+        height:90,
+        alignItems: 'stretch',
         justifyContent: 'flex-start',
-        flexDirection: 'row',
+        flexDirection: 'column',
         borderWidth: 0,
         marginBottom:2,
-        borderRadius: 10
+        borderRadius: 0,
     },
     containerTitle:{
-        justifyContent: 'center',
+        //justifyContent: 'center',
         flexDirection: 'column',
-        marginLeft: 30,
-        flex:5
+        marginTop: 8,
+        marginLeft: 10,
+        flex:5,
     },
     title:{
-        fontSize: 20,
+        fontSize: 18,
         minWidth: 200,
         maxWidth: 300,
         //fontFamily:"Berlin Sans FB Regular",
         color: ThemeColor.PRIMARY_TEXT
     },
     desc:{
-        fontSize: 12,
+        fontSize: 15,
         opacity: 0.69,
         //fontFamily:"Berlin Sans FB Regular",
         color: ThemeColor.PRIMARY_TEXT
-    }
+    },
+    bar:{
+        height:20,
+        backgroundColor: ThemeColor.PRIMARY_THIN,
+        borderRadius: 20,
+    } 
   });
   
 
