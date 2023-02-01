@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
         height:20,
         backgroundColor: ThemeColor.PRIMARY_THIN,
         borderRadius: 20,
+        
     } 
   });
   

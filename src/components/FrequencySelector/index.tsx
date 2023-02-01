@@ -22,9 +22,8 @@ enum SelectedEnd {
 }
 
 type PropsFrequencySelector = {
-    ReadyAndchangeFrequency: (frequencies : Frequency[]) => void,
+    ReadyAndchangeFrequency: (frequency : Frequency) => void,
     NotReady: () => void,
-    Debug?: (message: string) => void
 }
 
 const locales = ['en', 'fr'] as const;
@@ -34,8 +33,6 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
     const {ReadyAndchangeFrequency, NotReady} = props
 
     const [isReady,setIsReady] = useState<boolean>(false)
-
-    
 
     //#region PROPS
 
@@ -110,20 +107,41 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
         }else{
             switch(dropDownSelected){
                 case FrequencyEvery.NULL:
-                    ReadyAndchangeFrequency([])
+                    ReadyAndchangeFrequency(Frequency.Empty())
                     break;
                 case FrequencyEvery.DAY:
+                    ReadyAndchangeFrequency(new Frequency(occurence, dropDownSelected, 
+                        new Date(Date.now()), getEndDate(), [],0))
                     break;
                 case FrequencyEvery.WEEK:
                     if(weekDaySelected.length > 0){
-
+                        ReadyAndchangeFrequency(new Frequency(occurence, dropDownSelected, 
+                            new Date(Date.now()), getEndDate(), weekDaySelected, 0))
                     }else{
+                        // DEBUG
+                        console.log("error : `weekDaySelected` not valid : " + weekDaySelected)
                         setNotReady()
                     }
                     break;
                 case FrequencyEvery.MONTH:
+                    if(dayNum > 0 && dayNum < 32){
+                        ReadyAndchangeFrequency(new Frequency(occurence, dropDownSelected, 
+                            new Date(Date.now()), getEndDate(), [], dayNum))
+                    }else{
+                        // DEBUG
+                        console.log("error : `dayNum` not valid : " + dayNum)
+                        setNotReady()
+                    }
                     break;
                 case FrequencyEvery.YEAR:
+                    if(dayNum > 0 && dayNum < 366){
+                        ReadyAndchangeFrequency(new Frequency(occurence, dropDownSelected, 
+                            new Date(Date.now()), getEndDate(), [], dayNum))
+                    }else{
+                        // DEBUG
+                        console.log("error : `dayNum` not valid : " + dayNum)
+                        setNotReady()
+                    }
                     break;
             }
         }
@@ -137,15 +155,25 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
     }
 
     const isEndReady = () : boolean => {
+        // DEBUG
+        if(occurence <= 0){
+            console.log("error : `occurence` not valid : " + occurence)
+        }
         if(selectedTypeEnd == SelectedEnd.ENDDATE){
             if(dateValueEnd == null) {
                 return false
             }
-            const now: Date = new Date( Date.now())
-            now.setDate(now.getDate() + 1)
-
+            const now: Date = Frequency.nowWithDateOnly()
+            // DEBUG
+            if(dateValueEnd.toDate() < now){
+                console.log("error : `dateValueEnd` not valid : " + dateValueEnd.toDate())
+            }
             return (dateValueEnd.toDate() >= now) && occurence > 0
         }else{
+            // DEBUG
+            if(nbTaskToCreate <= 0){
+                console.log("error : `nbTaskToCreate` not valid : " + nbTaskToCreate)
+            }
             return nbTaskToCreate > 0 && occurence > 0
         }
     }
@@ -164,12 +192,12 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                     break;
                 case FrequencyEvery.WEEK:
                     let nbTask = 0
-                    let doNotCountFirst: boolean = false
+                    let doNotCountFirst: boolean = true
                     // on cherche à trouver la date de fin par rapport par rapport aux jours de la semaine sélectionnés
                     // on boucle tant que l'on a pas compter le nombre de tâches nécessaire
                     while(nbTask < nbTaskToCreate){
                         if(occurence > 1 // si l'utilisateur demande une occurence (Toute les 2 semaines par exemple)
-                            && dateEnd.getDay() == 0 ){ // on vérifie si on est situé au premier jour de la semaine
+                            && dateEnd.getDay() == WEEKDAY.MONDAY ){ // on vérifie si on est situé au premier jour de la semaine
                             if(doNotCountFirst){
                                 doNotCountFirst = false
                             }else{
@@ -184,12 +212,11 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                         }
                         // incrémentation d'une journée
                         dateEnd.setDate(dateEnd.getDate() + 1)
+                        if(doNotCountFirst)
+                            doNotCountFirst = false
                     }
                     // on retire une journée pour évité le décallage d'une journée justement. 
                     dateEnd.setDate(dateEnd.getDate() - 1)
-
-                    if(doNotCountFirst)
-                        doNotCountFirst = false
                     break;
                 case FrequencyEvery.MONTH:
                     dateEnd.setMonth(dateEnd.getMonth() + ((nbTaskToCreate-1) * occurence))
@@ -331,26 +358,26 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
             
             <View style={[styles.containerDayWeek, weekDayVisible ? {display:"flex"} :  {display:"none"}]}>
 
-                <Pressable style={buttonWeekStyle[0]} onPress={() => {addOrRemoveDay(WEEKDAY.MONDAY)}}>
-                    <Text style={txtButtonWeekStyle[0]}>Lun</Text>
+                <Pressable style={buttonWeekStyle[1]} onPress={() => {addOrRemoveDay(WEEKDAY.MONDAY)}}>
+                    <Text style={txtButtonWeekStyle[1]}>Lun</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[1]} onPress={() => {addOrRemoveDay(WEEKDAY.THUESDAY)}}>
-                    <Text style={txtButtonWeekStyle[1]}>Mar</Text>
+                <Pressable style={buttonWeekStyle[2]} onPress={() => {addOrRemoveDay(WEEKDAY.THUESDAY)}}>
+                    <Text style={txtButtonWeekStyle[2]}>Mar</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[2]} onPress={() => {addOrRemoveDay(WEEKDAY.WEDNESDAY)}}>
-                    <Text style={txtButtonWeekStyle[2]}>Mer</Text>
+                <Pressable style={buttonWeekStyle[3]} onPress={() => {addOrRemoveDay(WEEKDAY.WEDNESDAY)}}>
+                    <Text style={txtButtonWeekStyle[3]}>Mer</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[3]} onPress={() => {addOrRemoveDay(WEEKDAY.THURSDAY)}}>
-                    <Text style={txtButtonWeekStyle[3]}>Jeu</Text>
+                <Pressable style={buttonWeekStyle[4]} onPress={() => {addOrRemoveDay(WEEKDAY.THURSDAY)}}>
+                    <Text style={txtButtonWeekStyle[4]}>Jeu</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[4]} onPress={() => {addOrRemoveDay(WEEKDAY.FRIDAY)}}>
-                    <Text style={txtButtonWeekStyle[4]}>Ven</Text>
+                <Pressable style={buttonWeekStyle[5]} onPress={() => {addOrRemoveDay(WEEKDAY.FRIDAY)}}>
+                    <Text style={txtButtonWeekStyle[5]}>Ven</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[5]} onPress={() => {addOrRemoveDay(WEEKDAY.SATURDAY)}}>
-                    <Text style={txtButtonWeekStyle[5]}>Sam</Text>
+                <Pressable style={buttonWeekStyle[6]} onPress={() => {addOrRemoveDay(WEEKDAY.SATURDAY)}}>
+                    <Text style={txtButtonWeekStyle[6]}>Sam</Text>
                 </Pressable>
-                <Pressable style={buttonWeekStyle[6]} onPress={() => {addOrRemoveDay(WEEKDAY.SUNDAY)}}>
-                    <Text style={txtButtonWeekStyle[6]}>Dim</Text>
+                <Pressable style={buttonWeekStyle[0]} onPress={() => {addOrRemoveDay(WEEKDAY.SUNDAY)}}>
+                    <Text style={txtButtonWeekStyle[0]}>Dim</Text>
                 </Pressable>
             </View>
 
