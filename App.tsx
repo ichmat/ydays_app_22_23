@@ -125,9 +125,6 @@ export default function App() {
     </View>
   );
 }
-/*
-        <FontAwesome5 name='gift' style={styles.icon} size={40} color={ actualNavigation == "Gift" ? ThemeColor.PRIMARY_SHADE : ThemeColor.PRIMARY_THIN} />
-*/
 
 const styles = StyleSheet.create({
   container: {
