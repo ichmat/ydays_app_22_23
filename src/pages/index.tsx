@@ -1,3 +1,5 @@
 export { default as Home } from './Home'
 export { default as Tasks } from './Tasks'
 export { default as Profile } from './Profile'
+export { default as Parameter} from './Parameter'
+export { default as Inventory} from './Inventory'
