@@ -12,24 +12,16 @@ import { DataTask, Frequency, FrequencyEvery, RecurrentTask, TypeTask, WEEKDAY }
 import uuid from 'react-native-uuid';
 
 const Home = (HomeProp: any) => {
-  const navTabUpdate = HomeProp.route.params.navTabUpdate;
+  //const navTabUpdate = HomeProp.route.params.navTabUpdate;
 
   
 
   const navigate = (to: string) => {
-    navTabUpdate(to)
+    //navTabUpdate(to)
     HomeProp.navigation.navigate(to)
   }
-  /*
-  if(!loaded){
-    return (
-      <View style={{ flex: 1, justifyContent:'center', alignItems:'center' , backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
-        <ActivityIndicator />
-      </View>
-    )
-  }*/
-
-  // DEBUG
+  
+/* DEBUG ONLY
   const showFrequence = (freq: Frequency) => {
     if(freq.every == FrequencyEvery.NULL)
     {
@@ -43,13 +35,11 @@ const Home = (HomeProp: any) => {
     let task: DataTask | null = req.createTask(uuid.v4() as string)
     while(task != null){
       array.push({dateTask : task.startTask.toLocaleString() + ' ' + weekToString(task.startTask.getDay())})
-
       task = req.createTask(uuid.v4() as string)
     }
     console.log(array)
   }
 
-  // DEBUG
   const weekToString = (week :WEEKDAY): string =>{
     switch(week){
       case WEEKDAY.MONDAY:
@@ -67,12 +57,11 @@ const Home = (HomeProp: any) => {
       case WEEKDAY.SUNDAY:
         return "Dimanche"
     }
-  }
+  }*/
 
   return (
     <View style={styles.container}>
         <Text style={styles.title}> Welcome ! </Text>
-        <FrequencySelector NotReady={() => {SetIsReady(false)}} ReadyAndchangeFrequency={showFrequence} />
     </View>
   );
 }
@@ -80,7 +69,7 @@ const Home = (HomeProp: any) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: ThemeColor.PRIMARY_THIN,
+      backgroundColor: ThemeColor.BACKGROUND,
       alignItems: 'center',
       justifyContent: 'center',
     },

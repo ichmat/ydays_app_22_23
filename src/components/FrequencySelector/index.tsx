@@ -219,10 +219,12 @@ const FrequencySelector = (props: PropsFrequencySelector) => {
                     dateEnd.setDate(dateEnd.getDate() - 1)
                     break;
                 case FrequencyEvery.MONTH:
-                    dateEnd.setMonth(dateEnd.getMonth() + ((nbTaskToCreate-1) * occurence))
+                    console.log("dateEnd before : " + dateEnd.toLocaleString())
+                    dateEnd.setMonth(dateEnd.getMonth() + ((nbTaskToCreate) * occurence))
+                    console.log("dateEnd after : " + dateEnd.toLocaleString())
                     break;
                 case FrequencyEvery.YEAR:
-                    dateEnd.setFullYear(dateEnd.getFullYear() + ((nbTaskToCreate-1) * occurence))
+                    dateEnd.setFullYear(dateEnd.getFullYear() + ((nbTaskToCreate) * occurence))
                     break;
             }
             return dateEnd

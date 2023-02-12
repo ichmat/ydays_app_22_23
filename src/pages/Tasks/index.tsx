@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StatusBar, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Button, StatusBar, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { DataTask, ProgressTask, SimpleTask, TypeTask} from '../../../types/types';
 import { useTasks } from '../../hooks';
 import { FrequencySelector, Task ,TaskProgress} from '../../components';
@@ -11,15 +11,11 @@ import { ActivityIndicator } from "@react-native-material/core";
 import { SelectList } from 'react-native-dropdown-select-list'
 import { ModalTaskCreation, ModalTaskEdition} from '../../components';
 
-// FONT PRIMARY
-const AusterRoundedBlack = require('../../../assets/fonts/AusterRoundedBlack.ttf');
-
 const Tasks = (TaskProps : any) => {
 
   // navigation personnalisé pour mettre à jour la nav bar
-  const navTabUpdate = TaskProps.route.params.navTabUpdate;
   const navigate = (to: string) => {
-    navTabUpdate(to)
+    //navTabUpdate(to)
     TaskProps.navigation.navigate(to)
   }
 
@@ -75,17 +71,19 @@ const Tasks = (TaskProps : any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.head}>Mes taches</Text>
-      <View style={styles.containterTask}>
-        {tasks.map((task: DataTask, index: number) => {
-          if(task.typeTask == TypeTask.Simple){
-            return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} />
-          }else if(task.typeTask == TypeTask.Progress){
-            return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState}/>
-          }
-        })}
-      </View>
+      <ScrollView contentContainerStyle={{overflow:'visible', padding:15}}>
+        <View style={styles.containterTask}>
+          {tasks.map((task: DataTask, index: number) => {
+            if(task.typeTask == TypeTask.Simple){
+              return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} />
+            }else if(task.typeTask == TypeTask.Progress){
+              return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState}/>
+            }
+          })}
+        </View >
+      </ScrollView>
       <Pressable onPress={() => (setModalCreateVisible(true))} style={styles.floatingInput}>
-          <FontAwesome color={ThemeColor.PRIMARY_THIN} size={25} name='plus'/>
+          <AntDesign color={ThemeColor.WHITE} size={25} name='plus'/>
       </Pressable>
 
       <ModalTaskCreation newTask={createNewTask} modalVisibility={modalCreateVisible} requestHideModal={() => setModalCreateVisible(false)} />
@@ -96,62 +94,30 @@ const Tasks = (TaskProps : any) => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 6,
-      backgroundColor: ThemeColor.PRIMARY_THIN,
+      flex:6,
+      backgroundColor: ThemeColor.BACKGROUND,
       alignItems: 'stretch',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
+      flexDirection:'column'
     },
     containterTask:  {
+      flex:1,
       alignItems: 'stretch',
-      justifyContent: 'center',
-      flex: 3,
-      marginLeft: 10,
-      marginRight: 10
+      justifyContent: 'flex-start',
+      alignContent:'flex-start',
+      flexDirection:'column',
     },
-    containerModal:{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: ThemeColor.PRIMARY_SHADE,
-      opacity:0.75
-    },
-    modalTextInput:{
-      color: ThemeColor.PRIMARY_TEXT,
-      padding: 5
-    },
-    button: {
-      minWidth: 120,
-      minHeight: 30,
-      padding: 5,
-      backgroundColor: ThemeColor.BLACK,
-      borderRadius: 5,
-      margin: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    buttonDelete: {
-      minWidth: 120,
-      minHeight: 30,
-      padding: 5,
-      backgroundColor: ThemeColor.DANGER,
-      borderRadius: 5,
-      margin: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    buttonTxt:{
-      color:'#FFFFFF'
-    },
+    
     floatingInput: {
       alignItems: 'center',
       justifyContent: 'center',
       position: 'absolute',
       borderRadius: 50,
-      backgroundColor: '#A0A0A0',
+      backgroundColor: ThemeColor.BLACK,
       width: 50,
       height: 50,
 
-      bottom: 30,
+      bottom: 5,
       right: 30,
 
       shadowColor: "#000",

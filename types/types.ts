@@ -100,27 +100,20 @@ export class Frequency {
                 // pour être sûr d'avoir une occurence correct
                 if(this.numOfDay > 31) this.numOfDay = 31
 
-                if(nextDate.getDate() < this.numOfDay){
+                if(nextDate.getDate() > this.numOfDay){
+                    nextDate.setMonth(nextDate.getMonth() + this.occurence)
+                }
+                var max = this.getLastDayOfMonth(nextDate.getFullYear(), nextDate.getMonth())
+                if(max < this.numOfDay){
+                    nextDate.setDate(max)
+                }else{
                     nextDate.setDate(this.numOfDay)
-                }else if(nextDate.getDate() > this.numOfDay){
-                    let exceptedMonth : number;
-                    do{
-                        exceptedMonth = nextDate.getMonth()
-                        nextDate.setMonth(nextDate.getMonth() + this.occurence)
-                        exceptedMonth += this.occurence
-                        if(exceptedMonth > 11){
-                            exceptedMonth = 0
-                        }
-                        nextDate.setDate(this.numOfDay)
-                    }while(exceptedMonth != nextDate.getMonth())
                 }
                 break;
             case FrequencyEvery.YEAR:
                 // pour être sûr d'avoir une occurence correct
                 if(this.numOfDay > 366) this.numOfDay = 366
-
                 const dayOfYear = Frequency.dayOfYear(nextDate)
-
                 if(dayOfYear < this.numOfDay){
                     const dayAdd = this.numOfDay - dayOfYear
                     nextDate.setDate(nextDate.getDate() + dayAdd)
@@ -171,37 +164,26 @@ export class Frequency {
                 }
                 break;
             case FrequencyEvery.MONTH:
-                if(nextDate.getDate() < this.numOfDay){
+                nextDate.setDate(1)
+                nextDate.setMonth(nextDate.getMonth() + this.occurence)
+
+                if(nextDate.getDate() > this.numOfDay){
+                    nextDate.setMonth(nextDate.getMonth() + this.occurence)
+                }
+                var max = this.getLastDayOfMonth(nextDate.getFullYear(), nextDate.getMonth())
+                if(max < this.numOfDay){
+                    nextDate.setDate(max)
+                }else{
                     nextDate.setDate(this.numOfDay)
-                }else if(nextDate.getDate() > this.numOfDay){
-                    let exceptedMonth : number;
-                    do{
-                        exceptedMonth = nextDate.getMonth()
-                        nextDate.setMonth(nextDate.getMonth() + this.occurence)
-                        exceptedMonth += this.occurence
-                        if(exceptedMonth > 11){
-                            exceptedMonth = 0
-                        }
-                        nextDate.setDate(this.numOfDay)
-                    }while(exceptedMonth != nextDate.getMonth())
                 }
                 break;
             case FrequencyEvery.YEAR:
+                nextDate.setDate(1)
+                nextDate.setMonth(0)
+                nextDate.setFullYear(nextDate.getFullYear() + this.occurence)
                 const dayOfYear = Frequency.dayOfYear(nextDate)
-
-                if(dayOfYear < this.numOfDay){
-                    const dayAdd = this.numOfDay - dayOfYear
-                    nextDate.setDate(nextDate.getDate() + dayAdd)
-                }else{
-                    let exceptedYear = nextDate.getFullYear()
-                    do{
-                        exceptedYear = nextDate.getFullYear()
-                        nextDate.setFullYear(nextDate.getFullYear() + this.occurence)
-                        exceptedYear += this.occurence
-                        nextDate.setMonth(0)
-                        nextDate.setDate(this.numOfDay)
-                    }while(exceptedYear != nextDate.getFullYear())
-                }
+                const dayAdd = this.numOfDay - dayOfYear
+                nextDate.setDate(nextDate.getDate() + dayAdd)
                 break;
         }
 
@@ -211,6 +193,10 @@ export class Frequency {
     public NextAndCheckIsAble() : boolean{
         this.SetNextDateCreation()
         return this.IsStillAble()
+    }
+
+    private getLastDayOfMonth(year: number, month: number) : number{
+        return new Date(year, month + 1, 0).getDate()
     }
 }
 

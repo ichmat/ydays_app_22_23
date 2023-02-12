@@ -7,10 +7,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ThemeColor } from '../../../theme';
 
 const Profile = (ProfilProps: any) => {
-    const navTabUpdate = ProfilProps.route.params.navTabUpdate;
+    //const navTabUpdate = ProfilProps.route.params.navTabUpdate;
 
     const navigate = (to: string) => {
-        navTabUpdate(to)
+        //navTabUpdate(to)
         ProfilProps.navigation.navigate(to)
       }
 
@@ -35,7 +35,7 @@ const Profile = (ProfilProps: any) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: ThemeColor.PRIMARY_THIN,
+      backgroundColor: ThemeColor.BACKGROUND,
       alignItems: 'center',
       justifyContent: 'center',
     },

@@ -30,10 +30,9 @@ const Inventaire = [
 ]
 
 const Inventory = (InventoryProps: any) => {
-    const navTabUpdate = InventoryProps.route.params.navTabUpdate;
 
     const navigate = (to: string) => {
-        navTabUpdate(to)
+        //navTabUpdate(to)
         InventoryProps.navigation.navigate(to)
       }
 
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
     container:{
         flex:6,
         overflow:'hidden',
-        backgroundColor:ThemeColor.PRIMARY_THIN
+        backgroundColor:ThemeColor.BACKGROUND
     },
     containerInventory:{
         flex:1,

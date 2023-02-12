@@ -1,7 +1,6 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
-import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated } from 'react-native';
-import { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
 import { Home, Profile, Tasks, Parameter, Inventory } from './src/pages';
@@ -12,18 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
-
-/*
-Auster Black Titre 28px
-//Paralucent demi bold 20px (sous titre ou autre)//
-Paralucent demi bold 16px
-Paralucent medium 14px
-Paralucent medium 12px
-*/
-
-SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator()
 
@@ -31,16 +19,17 @@ const SelectedColorIcon = ThemeColor.PRIMARY
 const UnselectedColorIcon = ThemeColor.WHITE
 
 export default function App() {
-  const [loaded] = useFonts({
-    'AusterRoundedBlack': require('./assets/fonts/AusterRoundedBlack.ttf'),
-  });
-
   const navigation = useRef<any>(undefined)
   const [navIsReady, setNavIsReady] = useState<boolean>(false)
-  const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(true)
-  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("Tasks")
-  const [actualNavigation, setActualNavigation] = useState<string>("Tasks")
+  const [isWaitingChangingLocaltion, setIsWaitingChangingLocaltion] = useState<boolean>(false)
+  const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("")
+  const [actualNavigation, setActualNavigation] = useState<string>("Home")
   const [IsReady, SetIsReady] = useState<boolean>(false);
+
+  const [loaded] = useFonts({
+    'AusterRoundedBlack': require('./assets/fonts/Auster/AusterRoundedBlack.ttf'),
+    'Paralucent': require('./assets/fonts/Paralucent/ParalucentText-Book.ttf'),
+  });
 
   useEffect(() => {
     if(loaded){
@@ -49,11 +38,11 @@ export default function App() {
   }, [loaded])
 
   useEffect(() => {
-    //console.log('loaded : ' + fontsLoaded)
     if(IsReady && navigation != undefined && navigation.current.isReady()){
       setNavIsReady(true)
       setActualNavigation(navigation.current.getCurrentRoute().name)
       if(isWaitingChangingLocaltion){
+        console.log('navigate')
         setIsWaitingChangingLocaltion(false)
         const location = waitingChangingLocaltion;
         setWaitingChangingLocaltion("")
@@ -86,7 +75,7 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
       <NavigationContainer ref={navigation} 
       theme={{
         dark: true,
@@ -106,12 +95,10 @@ export default function App() {
             headerShown: false
           }}>
           <Stack.Screen
-            initialParams={{navTabUpdate: navTabUpdate}}
             name="Home"
             component={Home}
           />
           <Stack.Screen
-            initialParams={{navTabUpdate: navTabUpdate}}
             name="Tasks"
             component={Tasks}
             options={{
@@ -125,12 +112,10 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            initialParams={{navTabUpdate: navTabUpdate}}
             name="Profile"
             component={Profile}
           />
           <Stack.Screen
-            initialParams={{navTabUpdate: navTabUpdate}}
             name="Parameter"
             component={Parameter}
             options={{
@@ -142,7 +127,6 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            initialParams={{navTabUpdate: navTabUpdate}}
             name="Inventory"
             component={Inventory}
             options={{
@@ -160,14 +144,14 @@ export default function App() {
         <Feather onPress={() => {navigate("Tasks")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
         <Feather onPress={() => {navigate("Profile")}} name='user' style={styles.icon} size={30} color={ actualNavigation == "Profile" || actualNavigation == "Inventory" || actualNavigation == "Parameter" ? SelectedColorIcon : UnselectedColorIcon} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: ThemeColor.WHITE,
     alignItems: 'center',
     justifyContent: 'center',
   },

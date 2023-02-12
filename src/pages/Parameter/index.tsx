@@ -61,11 +61,10 @@ const Parameter = (ParameterProp: any) => {
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: ThemeColor.PRIMARY_THIN,
+        backgroundColor: ThemeColor.BACKGROUND,
         flex:1
     },
     parameterContainer: {
-        backgroundColor: ThemeColor.PRIMARY_THIN,
         flexDirection: 'row',
         alignItem: 'center',
         height:50,
