@@ -75,9 +75,9 @@ const Tasks = (TaskProps : any) => {
         <View style={styles.containterTask}>
           {tasks.map((task: DataTask, index: number) => {
             if(task.typeTask == TypeTask.Simple){
-              return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} />
+              return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
             }else if(task.typeTask == TypeTask.Progress){
-              return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState}/>
+              return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
             }
           })}
         </View >
