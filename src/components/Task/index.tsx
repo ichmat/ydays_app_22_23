@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Pressable, Animated, SafeAreaView } from "react
 import { Radius, ThemeColor } from "../../../theme";
 import { SimpleTask, DataTask } from "../../../types/types";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable as PressMaterial } from '@react-native-material/core';
 
@@ -10,6 +11,7 @@ type PropsTask = {
     theTask : SimpleTask,
     changeStateTask: (task: DataTask, isChecked: boolean) => void,
     openTask: (task: DataTask) => void,
+    deleteTask: (task : DataTask) => void,
 }
 
 const MAX_TITLE_CHAR : number = 27
@@ -69,9 +71,12 @@ const Task = (props : PropsTask) => {
                     <Text style={styles.editText}>Modifier la tâche</Text>
                 </PressMaterial>
             </View>
-            <Animated.View style={[styles.containerChecked, {display: displayChecked ? 'flex' : 'none'}]}>
+            <View style={[styles.containerChecked, {display: displayChecked ? 'flex' : 'none'}]}>
                 <AntDesign name="check" size={30} color={ThemeColor.BLACK} />
-            </Animated.View>
+            </View>
+            <Pressable style={styles.binIcon} onPress={() => {props.deleteTask(props.theTask)}}>
+                <Feather color={ThemeColor.PRIMARY} size={25} name='trash-2'/>
+            </Pressable>
         </SafeAreaView>
     </Pressable>
     );
@@ -133,6 +138,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#e4e5fa50',
         alignItems:'center',
         justifyContent:'center'
+    },
+    binIcon:{
+        position: 'absolute',
+        top: 8,
+        right: 13,
     }
   });
   

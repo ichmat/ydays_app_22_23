@@ -110,6 +110,7 @@ const Page = () => {
                 // à l'utilisation d'une map, il faut toujours préciser une clé `key`. Par défaut, la fonction map possède en deuxième argument l'index de chaque élément.
             })
         }
+        
         </View>
     )
 }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StatusBar, StyleSheet, Text, View, Modal } from 'react-native';
 import { Pressable, TextInput } from '@react-native-material/core';
-import { ThemeColor } from '../../../theme';
-import { DataTask, TypeTask } from '../../../types/types';
+import { Radius, ThemeColor } from '../../../theme';
+import { DataTask, ProgressTask, TypeTask } from '../../../types/types';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 type PropsModalTaskEdition = {
     modalVisibility: boolean,
@@ -13,17 +14,27 @@ type PropsModalTaskEdition = {
 }
 
 const ModalTaskEdition = (props : PropsModalTaskEdition) => {
+    const [progress, setProgress] = useState<number>(50)
     const {modalVisibility, editedTask, requestHideModal, requestTaskEdit, requestDeleteTask} = props;
     // titre pour la tâche créer/modifier
     const [titleInput,setTitleInput] = useState<string>("");
     // description pour la tâche créer/modifier
     const [descInput,setDescInput] = useState<string>("");
 
+    const [displaySlider, setDisplaySlider] = useState<boolean>(false) 
+
     // à chaque fois qu'une nouvelle tâche est édité, mettre les valeurs de celle-ci dans le modal
     useEffect(() => {
         if(editedTask != undefined){
             setTitleInput(editedTask.titre)
             setDescInput(editedTask.description)
+            if(editedTask.typeTask == TypeTask.Progress){
+              const progressEdit : ProgressTask = editedTask as ProgressTask
+              setProgress(progressEdit.progress)
+              setDisplaySlider(true)
+            }else{
+              setDisplaySlider(false)
+            }
         }else{
             setTitleInput("")
             setDescInput("")
@@ -35,6 +46,15 @@ const ModalTaskEdition = (props : PropsModalTaskEdition) => {
         if(editedTask != undefined){
             editedTask.titre = titleInput
             editedTask.description = descInput
+            if(editedTask.typeTask == TypeTask.Progress){
+              const progressEdit : ProgressTask = editedTask as ProgressTask
+              if (progress == 100) {
+                progressEdit.isFinished = true
+              } else if (progress <= 100) {
+                progressEdit.isFinished = false
+              }
+                progressEdit.progress = progress
+            }
             requestTaskEdit(editedTask)
         }
         requestHideModal()
@@ -59,6 +79,18 @@ const ModalTaskEdition = (props : PropsModalTaskEdition) => {
           <Text style={{fontSize:20, margin: 10, color:ThemeColor.PRIMARY_TEXT}}>Modifier tâche</Text>
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput}/>
           <TextInput variant='standard' color={ThemeColor.PRIMARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
+          {
+            displaySlider && (
+              <MultiSlider
+              values={[progress]}
+              min={0}
+              max={100}
+              onValuesChangeFinish={(value) => {}}
+              onValuesChange={(values) => {setProgress(values[0])}}
+              />
+            )
+          }
+         
           <View style={{flexDirection:'row',  alignItems: 'center', justifyContent: 'center', marginTop:5}}>
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {modifyTask()}}>
               <Text style={styles.buttonTxt}>Modifier</Text>
@@ -110,7 +142,7 @@ const styles = StyleSheet.create({
     },
     buttonTxt:{
       color:'#FFFFFF'
-    }
+    },
   });
 
 export default ModalTaskEdition

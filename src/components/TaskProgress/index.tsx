@@ -1,24 +1,34 @@
 import { Pressable as PressMaterial } from "@react-native-material/core";
-import React from "react";
-import { View, StyleSheet, Text, AppRegistry, ColorValue, FlexStyle, Pressable } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet, Text, AppRegistry, ColorValue, FlexStyle, Pressable, ViewStyle } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Radius, ThemeColor } from "../../../theme";
 import { ProgressTask } from "../../../types/types";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import { useState } from "react";
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 type PropsTaskProgress = {
     theTask : ProgressTask,
     changeStateTask: (task: ProgressTask, isChecked: boolean) => void,
     openTask: (task: ProgressTask) => void,
+    deleteTask: (task : ProgressTask) => void,
 }
 
 const MAX_TITLE_CHAR : number = 27
 const MAX_DESC_CHAR : number = 45
 
 const TaskProgress = (props : PropsTaskProgress) => {
+    const [displayChecked, setDisplayChecked] = useState<ViewStyle>({display:'none'})
+    
+    useEffect(() => {
+        if (props.theTask.isFinished == true) {
+            setDisplayChecked({display:'flex'})
+        } else {
+            setDisplayChecked({display:'none'})
+        }
+    },[props.theTask.isFinished])
 
     return (
         <Pressable onLongPress={() => {props.changeStateTask(props.theTask, props.theTask.isFinished)}}>
@@ -30,9 +40,15 @@ const TaskProgress = (props : PropsTaskProgress) => {
                         <Text style={styles.editText}>Modifier la tâche</Text>
                     </Pressable>
                     <View style={styles.containerBar}>
-                        <View style={styles.bar} />
+                        <View style={[styles.bar,{width: props.theTask.progress+'%',}]} />
                     </View>
                 </View>
+                <Pressable style={[styles.containerChecked, displayChecked]} onPress={() => {props.openTask(props.theTask)}}>
+                    <AntDesign name="check" size={30} color={ThemeColor.BLACK} />
+                </Pressable>
+                <Pressable style={styles.binIcon} onPress={() => {props.deleteTask(props.theTask)}}>
+                    <Feather color={ThemeColor.PRIMARY} size={25} name='trash-2'/>
+                </Pressable>
             </View>
         </Pressable>
         );
@@ -90,7 +106,6 @@ const TaskProgress = (props : PropsTaskProgress) => {
         bar:{
             flex:1,
             backgroundColor: ThemeColor.PRIMARY,
-            width: '50%',
             borderRadius: 15
 
         },
@@ -100,6 +115,23 @@ const TaskProgress = (props : PropsTaskProgress) => {
             color: ThemeColor.SECONDARY_TEXT,
             marginBottom: 5
 
+        },
+        containerChecked:{
+            borderRadius: Radius.TASK,
+            position:'absolute',
+            top:0,
+            left:0,
+            width:'100%',
+            height:'100%',
+            backgroundColor: '#e4e5fa50',
+            alignItems:'center',
+            justifyContent:'center'
+          },
+          binIcon:{
+            position: 'absolute',
+            top: 8,
+            right: 13,
+            
         }
       });
       

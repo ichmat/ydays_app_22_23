@@ -4,6 +4,7 @@ import { Pressable, TextInput } from '@react-native-material/core';
 import { ThemeColor } from '../../../theme';
 import { DataTask, Frequency, TypeTask } from '../../../types/types';
 import FrequencySelector from '../FrequencySelector';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 
 type PropsModalTaskCreation = {
@@ -42,6 +43,22 @@ const ModalTaskCreation = (props: PropsModalTaskCreation) => {
           <TextInput style={{minWidth:250}} variant='filled' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.TERTIARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='titre' value={titleInput} onChangeText={setTitleInput} />
           <TextInput style={{minWidth:250}} variant='filled' color={ThemeColor.PRIMARY_TEXT} placeholderTextColor={ThemeColor.TERTIARY_TEXT} inputStyle={{color:ThemeColor.PRIMARY_TEXT}} placeholder='description' value={descInput} onChangeText={setDescInput} />
           
+          <FormControl>
+          <FormLabel id="demo-radio-buttons-group-label">Type de tâche</FormLabel>
+  <RadioGroup
+    aria-labelledby="demo-radio-buttons-group-label"
+    defaultValue="simple"
+    name="radio-buttons-group"
+    row
+    value={typeTaskToCreate}
+    onChange={(value) => setTypeTaskToCreate(parseInt(value.target.value))}
+    >
+    <FormControlLabel value={TypeTask.Simple} control={<Radio />} label="simple" />
+    <FormControlLabel value={TypeTask.Progress} control={<Radio />} label="progression" />
+  </RadioGroup>
+  </FormControl>
+          
+
           <View style={styles.containerButton}>
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
               <Text style={styles.buttonTxt}>Créer</Text>
