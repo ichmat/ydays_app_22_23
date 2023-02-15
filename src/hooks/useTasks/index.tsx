@@ -3,7 +3,7 @@ import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View } from 
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { DataTask, SimpleTask, ProgressTask, Frequency } from '../../../types/types';
 import uuid from 'react-native-uuid';
-import useStorage from '../useStorage';
+import { useStorage } from '../';
 
 const useTasks = () => {
     const {getTasks, saveTasks} = useStorage()

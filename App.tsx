@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
-import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView } from 'react-native';
+import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView, PermissionsAndroid, Permission } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
 import { Home, Profile, Tasks, Parameter, Inventory } from './src/pages';
@@ -19,6 +19,33 @@ const Stack = createNativeStackNavigator()
 const SelectedColorIcon = ThemeColor.PRIMARY
 const UnselectedColorIcon = ThemeColor.BLACK
 
+const requestPermissionAndroid = async (permission: Permission, title: string, message: string): Promise<boolean> => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      permission,
+      {
+        title: title,
+        message: message,
+        buttonNegative: 'Annulé',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      return true
+    } else {
+      return false
+    }
+  } catch (err) {
+    console.warn(err);
+    return false
+  }
+};
+
+const permissions = [
+  {titre: "Lecture stockage interne", description: "", permission: PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE},
+  {titre: "Ecriture stockage interne", description: "", permission: PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE},
+]
+
 export default function App() {
   const navigation = useRef<any>(undefined)
   const [navIsReady, setNavIsReady] = useState<boolean>(false)
@@ -26,12 +53,20 @@ export default function App() {
   const [waitingChangingLocaltion, setWaitingChangingLocaltion] = useState<string>("")
   const [actualNavigation, setActualNavigation] = useState<string>("Home")
   const [IsReady, SetIsReady] = useState<boolean>(false);
+  const [haveAllPermission, setHaveAllPermission] = useState<boolean>(false)
 
   const [loaded] = useFonts({
     'AusterRoundedBlack': require('./src/assets/fonts/Auster/AusterRoundedBlack.ttf'),
     'Paralucent': require('./src/assets/fonts/Paralucent/Paralucent-Medium.ttf'),
     'Paralucent-DemiBold': require('./src/assets/fonts/Paralucent/Paralucent-DemiBold.ttf'),
   });
+
+  useEffect(() => {
+    for (let index = 0; index < permissions.length; index++) {
+      const p = permissions[index]
+      requestPermissionAndroid(p.permission, p.titre, p.description)
+    }
+  }, [])
 
   useEffect(() => {
     if(loaded){
@@ -175,6 +210,8 @@ const styles = StyleSheet.create({
     flexDirection:'row', 
     justifyContent:'space-evenly', 
     alignItems:'center',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
 
     shadowColor: "#000",
     shadowOffset: {
