@@ -17,9 +17,6 @@ const Profile = (ProfilProps: any) => {
     return (
       
       <View style={styles.container}>
-          <Pressable style={styles.InvButton} onPress={() => {navigate("Inventory")}}>
-            <MaterialIcons color={ThemeColor.PRIMARY_THIN} size={35} name='backpack' />
-          </Pressable>  
         
           <Pressable style={styles.ParamsButton} onPress={() => {navigate("Parameter")}}>
             <Ionicons color={ThemeColor.PRIMARY_THIN} size={35} name='settings-sharp' />

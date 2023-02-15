@@ -12,11 +12,12 @@ import Feather from 'react-native-vector-icons/Feather';
 import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
+import { Shadow } from 'react-native-shadow-2';
 
 const Stack = createNativeStackNavigator()
 
 const SelectedColorIcon = ThemeColor.PRIMARY
-const UnselectedColorIcon = ThemeColor.WHITE
+const UnselectedColorIcon = ThemeColor.BLACK
 
 export default function App() {
   const navigation = useRef<any>(undefined)
@@ -27,8 +28,9 @@ export default function App() {
   const [IsReady, SetIsReady] = useState<boolean>(false);
 
   const [loaded] = useFonts({
-    'AusterRoundedBlack': require('./assets/fonts/Auster/AusterRoundedBlack.ttf'),
-    'Paralucent': require('./assets/fonts/Paralucent/ParalucentText-Book.ttf'),
+    'AusterRoundedBlack': require('./src/assets/fonts/Auster/AusterRoundedBlack.ttf'),
+    'Paralucent': require('./src/assets/fonts/Paralucent/Paralucent-Medium.ttf'),
+    'Paralucent-DemiBold': require('./src/assets/fonts/Paralucent/Paralucent-DemiBold.ttf'),
   });
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight, overflow:'hidden' }}>
       <NavigationContainer ref={navigation} 
       theme={{
         dark: true,
@@ -130,7 +132,7 @@ export default function App() {
             name="Inventory"
             component={Inventory}
             options={{
-              headerShown: true,
+              headerShown: false,
               headerTitle: 'Inventaire',
               headerStyle:{
                 backgroundColor: ThemeColor.PRIMARY_THIN,
@@ -139,11 +141,14 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <View style={{backgroundColor:ThemeColor.BLACK ,margin:0, height:60, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}} >
-        <Feather onPress={() => {navigate("Home")}} name='home' style={styles.icon} size={30} color={ navIsReady && actualNavigation == "Home" ? SelectedColorIcon : UnselectedColorIcon} />
-        <Feather onPress={() => {navigate("Tasks")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
-        <Feather onPress={() => {navigate("Profile")}} name='user' style={styles.icon} size={30} color={ actualNavigation == "Profile" || actualNavigation == "Inventory" || actualNavigation == "Parameter" ? SelectedColorIcon : UnselectedColorIcon} />
-      </View>
+      <Shadow style={{width: '100%'}}>
+        <View style={styles.containerBottomNavBar} >
+          <Feather onPress={() => {navigate("Home")}} name='home' style={styles.icon} size={30} color={ navIsReady && actualNavigation == "Home" ? SelectedColorIcon : UnselectedColorIcon} />
+          <Feather onPress={() => {navigate("Tasks")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
+          <Feather onPress={() => {navigate("Inventory")}} name='archive' style={styles.icon} size={30} color={ actualNavigation == "Inventory" ? SelectedColorIcon : UnselectedColorIcon} />
+          <Feather onPress={() => {navigate("Profile")}} name='user' style={styles.icon} size={30} color={ actualNavigation == "Profile" || actualNavigation == "Parameter" ? SelectedColorIcon : UnselectedColorIcon} />
+        </View>
+      </Shadow>
     </SafeAreaView>
   );
 }
@@ -162,5 +167,23 @@ const styles = StyleSheet.create({
       height: 3,
     },
     textShadowRadius: 10,
+  },
+  containerBottomNavBar:{
+    backgroundColor:ThemeColor.WHITE,
+    margin:0, 
+    height:60, 
+    flexDirection:'row', 
+    justifyContent:'space-evenly', 
+    alignItems:'center',
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   }
 });

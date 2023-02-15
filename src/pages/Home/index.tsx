@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Button, TextInput, StatusBar, StyleSheet, Text, View } from 'react-native';
-import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { ThemeColor } from '../../../theme';
 import { Stack, Pressable, IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-material/core";
 import React from 'react';
-import {Bar} from 'react-native-progress';
-import AppLoading from 'expo-app-loading';
-import { FrequencySelector } from '../../components';
-import { useFonts } from 'expo-font';
 import { DataTask, Frequency, FrequencyEvery, RecurrentTask, TypeTask, WEEKDAY } from '../../../types/types';
-import uuid from 'react-native-uuid';
 
 const Home = (HomeProp: any) => {
   //const navTabUpdate = HomeProp.route.params.navTabUpdate;
-
-  
 
   const navigate = (to: string) => {
     //navTabUpdate(to)
@@ -77,7 +69,7 @@ const styles = StyleSheet.create({
       color: ThemeColor.PRIMARY_TEXT,
       fontSize: 50, 
       fontFamily: 'AusterRoundedBlack',
-      fontWeight: 'bold'
+      //fontWeight: 'bold'
     },
     input: {
       backgroundColor: ThemeColor.PRIMARY,

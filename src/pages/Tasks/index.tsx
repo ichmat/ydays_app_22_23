@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
       width: 50,
       height: 50,
 
-      bottom: 5,
+      bottom: 10,
       right: 30,
 
       shadowColor: "#000",
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     head: {
       padding: 20,
       fontSize: 40,
-      fontWeight: 'bold',
+      //fontWeight: 'bold',
       fontFamily: 'AusterRoundedBlack',
     }
   });
