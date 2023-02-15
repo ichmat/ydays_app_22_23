@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import RNFS, { ReadDirItem } from 'react-native-fs'
-import { PermissionsAndroid } from 'react-native';
+/*import RNFS, { ReadDirItem } from 'react-native-fs'
+import { PermissionsAndroid } from 'react-native';*/
 
 const useFileStorage = () => {
-    const [alreadyLoadedDir, setAlreadyLoadedDir] = useState<boolean>(false)
+    /*const [alreadyLoadedDir, setAlreadyLoadedDir] = useState<boolean>(false)
     const [fileFound, setFileFound] = useState<ReadDirItem[]>([])
 
     const loadFile = async () : Promise<ReadDirItem[]> => {
@@ -64,7 +64,7 @@ const useFileStorage = () => {
         getFilePath,
         writeFile,
         deleteFile
-    }
+    }*/
 }
 
 export default useFileStorage;

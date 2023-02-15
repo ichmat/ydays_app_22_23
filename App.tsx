@@ -61,12 +61,12 @@ export default function App() {
     'Paralucent-DemiBold': require('./src/assets/fonts/Paralucent/Paralucent-DemiBold.ttf'),
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     for (let index = 0; index < permissions.length; index++) {
       const p = permissions[index]
       requestPermissionAndroid(p.permission, p.titre, p.description)
     }
-  }, [])
+  }, [])*/
 
   useEffect(() => {
     if(loaded){
