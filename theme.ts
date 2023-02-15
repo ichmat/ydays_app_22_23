@@ -15,6 +15,12 @@ export enum ThemeColor {
     BLACK = '#000000'
 }
 
+export enum CustomFont{
+    AUSTER = 'AusterRoundedBlack',
+    PARALUCENT = 'Paralucent',
+    PARALUCENT_DEMIBOLD = 'Paralucent-DemiBold',
+}
+
 export enum Radius{
     TASK = 13
 }

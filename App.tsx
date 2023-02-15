@@ -112,7 +112,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColor.PRIMARY, marginTop: StatusBar.currentHeight, overflow:'hidden' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColor.BACKGROUND, marginTop: StatusBar.currentHeight, overflow:'hidden' }}>
       <NavigationContainer ref={navigation} 
       theme={{
         dark: true,
@@ -156,10 +156,10 @@ export default function App() {
             name="Parameter"
             component={Parameter}
             options={{
-              headerShown: true,
+              headerShown: false,
               headerTitle: 'Paramètres',
               headerStyle:{
-                backgroundColor: ThemeColor.PRIMARY_THIN
+                backgroundColor: ThemeColor.BACKGROUND
               }
             }}
           />
