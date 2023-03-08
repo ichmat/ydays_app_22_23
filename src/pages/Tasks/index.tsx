@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, StatusBar, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { DataTask, ProgressTask, SimpleTask, TypeTask} from '../../../types/types';
+import { DataTask, Frequency, ProgressTask, SimpleTask, TypeTask} from '../../../types/types';
 import { useTasks } from '../../hooks';
 import { FrequencySelector, Task ,TaskProgress} from '../../components';
 import { Pressable as PressMaterial, TextInput } from '@react-native-material/core';
@@ -28,6 +28,23 @@ const Tasks = (TaskProps : any) => {
   // référence la tâche séléctionné (pour la modal de modification/suppression)
   const [selectedTask, setSelectedTask] = useState<DataTask>();
   
+  const [displayedTasks, setDisplayedTasks] = useState<DataTask[]>([])
+
+  useEffect(() => {
+    if(tasks != undefined && tasks.length > 0){
+      console.log(tasks)
+      setDisplayedTasks(tasks.filter(t => {
+        if(t.isFinished == false){
+          return(t.startTask <= Frequency.now())
+        }else{
+          return(t.endTask > Frequency.now())
+        }
+      }))
+    }else{
+      setDisplayedTasks([])
+    }
+  },[tasks])
+
   // type de tâche en cours de création
   const [typeTaskToCreate, setTypeTaskToCreate] = useState<TypeTask>(TypeTask.Simple)
 
@@ -73,7 +90,7 @@ const Tasks = (TaskProps : any) => {
       <Text style={styles.head}>Mes taches</Text>
       <ScrollView contentContainerStyle={{overflow:'visible', padding:15}}>
         <View style={styles.containterTask}>
-          {tasks.map((task: DataTask, index: number) => {
+          {displayedTasks.map((task: DataTask, index: number) => {
             if(task.typeTask == TypeTask.Simple){
               return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
             }else if(task.typeTask == TypeTask.Progress){

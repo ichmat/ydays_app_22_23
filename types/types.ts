@@ -12,6 +12,22 @@ export enum FrequencyEvery{
     YEAR
 }
 
+export enum CATEGORY_HEAD{
+    HAIR,
+    FACE,
+    EYES,
+    MOUTH
+}
+
+export enum CATEGORY_BODY{
+    
+}
+
+export enum ITEM_TYPE{
+    HEAD,
+    BODY
+}
+
 export enum WEEKDAY{
     MONDAY = 1,
     THUESDAY = 2,
@@ -20,6 +36,42 @@ export enum WEEKDAY{
     FRIDAY = 5,
     SATURDAY = 6,
     SUNDAY = 0
+}
+
+export abstract class ItemData{
+    readonly id: string
+    readonly typeItem: ITEM_TYPE
+    titre : string
+    image : any
+    color: string
+
+    constructor(id: string, typeItem: ITEM_TYPE, titre: string, image: any, color: string){
+        this.id = id
+        this.typeItem = typeItem
+        this.titre = titre
+        this.image = image
+        this.color = color
+    }
+}
+
+export class ItemHead extends ItemData{
+    typeHead: CATEGORY_HEAD
+
+    constructor(id: string, typeItem: ITEM_TYPE, titre: string, image: any, typeHead: CATEGORY_HEAD, color: string){
+        super(id, typeItem, titre, image, color)
+        this.typeHead = typeHead
+        this.color = color
+    }
+}
+
+export class ItemBody extends ItemData{
+    typeBody: CATEGORY_BODY
+
+    constructor(id: string, typeItem: ITEM_TYPE, titre: string, image: any, typeBody: CATEGORY_BODY, color: string){
+        super(id, typeItem, titre, image, color)
+        this.typeBody = typeBody
+        this.color = color
+    }
 }
 
 export class Frequency {
@@ -59,6 +111,10 @@ export class Frequency {
 
     public static nowWithDateOnly() : Date{
         return this.dateOnly(new Date(Date.now()))
+    }
+
+    public static now() : Date{
+        return new Date(Date.now())
     }
 
     public static dateOnly(date: Date) : Date{

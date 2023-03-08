@@ -91,7 +91,7 @@ const Profile = (ProfilProps: any) => {
                   <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
                 </MaterialPress>
                 
-                <MaterialPress style={styles.CategorieStyle}>
+                <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITOUTFIL)}} style={styles.CategorieStyle}>
                   <View style={styles.CategorieStyleLeft}>
                     <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='hanger' />
                     <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier ma tenue</Text>
