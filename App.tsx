@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
-import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView, PermissionsAndroid, Permission } from 'react-native';
+import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView, PermissionsAndroid, Permission, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
 import { Home, Profile, Tasks, Parameter, Inventory } from './src/pages';
@@ -13,38 +13,12 @@ import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { Shadow } from 'react-native-shadow-2';
+import { usePermissions } from './src/hooks';
 
 const Stack = createNativeStackNavigator()
 
 const SelectedColorIcon = ThemeColor.PRIMARY
 const UnselectedColorIcon = ThemeColor.BLACK
-
-const requestPermissionAndroid = async (permission: Permission, title: string, message: string): Promise<boolean> => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      permission,
-      {
-        title: title,
-        message: message,
-        buttonNegative: 'Annulé',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      return true
-    } else {
-      return false
-    }
-  } catch (err) {
-    console.warn(err);
-    return false
-  }
-};
-
-const permissions = [
-  {titre: "Lecture stockage interne", description: "", permission: PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE},
-  {titre: "Ecriture stockage interne", description: "", permission: PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE},
-]
 
 export default function App() {
   const navigation = useRef<any>(undefined)
@@ -61,16 +35,21 @@ export default function App() {
     'Paralucent-DemiBold': require('./src/assets/fonts/Paralucent/Paralucent-DemiBold.ttf'),
   });
 
-  /*useEffect(() => {
-    for (let index = 0; index < permissions.length; index++) {
-      const p = permissions[index]
-      requestPermissionAndroid(p.permission, p.titre, p.description)
-    }
-  }, [])*/
+  const { requestAndroid } = usePermissions()
 
   useEffect(() => {
     if(loaded){
-      SetIsReady(true)
+      if(Platform.OS == 'android'){
+        requestAndroid().then((result) => {
+          if(result){
+            SetIsReady(true)
+          }else{
+            console.error("refused permissions")
+          }
+        })
+      }else{
+        SetIsReady(true)
+      }
     }
   }, [loaded])
 
