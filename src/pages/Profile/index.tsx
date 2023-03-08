@@ -1,27 +1,57 @@
 import { borderLeft } from '@mui/system';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, TextInput, StatusBar, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import { Button, TextInput, StatusBar, StyleSheet, Text, View, Pressable, ScrollView, ViewStyle } from 'react-native';
+import { Pressable as MaterialPress } from '@react-native-material/core'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { CustomFont, ThemeColor } from '../../../theme';
 import { Flex } from '@react-native-material/core';
+import { OutfitEditor, ProfilEditor } from '../../components';
+
+enum NavProfile{
+  MAIN,
+  EDITPROFIL,
+  EDITOUTFIL
+}
 
 const Profile = (ProfilProps: any) => {
     //const navTabUpdate = ProfilProps.route.params.navTabUpdate;
 
-    const [bottomScrollEnabled, setBottomScrollEnabled] = useState<boolean>(true)
-    const scrollViewRef = useRef<ScrollView | null>(null);
+    const [bottomScrollEnabled, setBottomScrollEnabled] = useState<boolean>(false)
+    const scrollViewRef = useRef<ScrollView | null>(null)
+
+    const [navProfilPage, setNavProfilPage] = useState<NavProfile>(NavProfile.MAIN)
+
+    const [displayCategorie, setDisplayCategorie] = useState<ViewStyle>({display: 'none'})
+    const [displayEditorProfil, setDisplayEditorProfil] = useState<ViewStyle>({display: 'none'})
+    const [displayEditorOutfit, setDisplayEditorOutfit] = useState<ViewStyle>({display: 'none'})
 
     useEffect(() => {
-      if(scrollViewRef != null){
-        if(bottomScrollEnabled){
-        }else{
-
-        }
+      switch(navProfilPage){
+        case NavProfile.MAIN:
+          setBottomScrollEnabled(true)
+          setDisplayCategorie({display: 'flex'})
+          setDisplayEditorProfil({display: 'none'})
+          setDisplayEditorOutfit({display: 'none'})
+          break;
+        case NavProfile.EDITPROFIL:
+          scrollViewRef.current?.scrollToEnd()
+          setBottomScrollEnabled(false)
+          setDisplayCategorie({display: 'none'})
+          setDisplayEditorProfil({display: 'flex'})
+          setDisplayEditorOutfit({display: 'none'})
+          break;
+        case NavProfile.EDITOUTFIL:
+          scrollViewRef.current?.scrollToEnd()
+          setBottomScrollEnabled(false)
+          setDisplayCategorie({display: 'none'})
+          setDisplayEditorProfil({display: 'none'})
+          setDisplayEditorOutfit({display: 'flex'})
+          break;
       }
-    },[bottomScrollEnabled])
+    },[navProfilPage])
 
     const navigate = (to: string) => {
         //navTabUpdate(to)
@@ -48,36 +78,39 @@ const Profile = (ProfilProps: any) => {
             </Pressable>
           </View>
         </View>
-        <ScrollView ref={scrollViewRef} scrollEnabled={true} style={styles.Bottom} showsHorizontalScrollIndicator={false}>
+        <ScrollView ref={scrollViewRef} scrollEnabled={bottomScrollEnabled} style={styles.Bottom} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
           <View style={styles.BottomContent}>
-            <Pressable onPressIn={() => {console.log("onPressIn");setBottomScrollEnabled(true)}} onPressOut={() => {console.log("onPressOut");setBottomScrollEnabled(false)}} style={{width:110, height:6, borderRadius:10, backgroundColor: "#C0C0C0", alignSelf: 'center', marginTop:15, marginBottom:15}}></Pressable>
+            <Pressable style={{width:110, height:6, borderRadius:10, backgroundColor: "#C0C0C0", alignSelf: 'center', marginTop:15, marginBottom:15}}></Pressable>
             
-            <View style={styles.Categorie}>
-                <Pressable style={styles.CategorieStyle}>
+            <View style={[styles.Categorie, displayCategorie]}>
+                <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITPROFIL)}} style={styles.CategorieStyle}>
                   <View style={styles.CategorieStyleLeft}>
                     <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='face-man-profile' />
                     <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier mon avatar</Text>
                   </View>
                   <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </Pressable>
+                </MaterialPress>
                 
-                <Pressable style={styles.CategorieStyle}>
+                <MaterialPress style={styles.CategorieStyle}>
                   <View style={styles.CategorieStyleLeft}>
                     <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='hanger' />
                     <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier ma tenue</Text>
                   </View>
                   <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </Pressable>
+                </MaterialPress>
 
-                <Pressable style={styles.CategorieStyle}>
+                <MaterialPress style={styles.CategorieStyle}>
                   <View style={styles.CategorieStyleLeft}>
                     <Feather color={ThemeColor.BLACK} size={25} name='share' />
-                    <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Partager mon avatar  </Text>
+                    <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Partager mon avatar</Text>
                   </View>
                   <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </Pressable>
-                
+                </MaterialPress>
             </View>
+
+            <ProfilEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorProfil} />
+
+            <OutfitEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorOutfit} />
 
           </View>
         </ScrollView>
@@ -165,7 +198,8 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
     },
     CategorieStyle: {
-      marginTop: 20,
+      paddingBottom: 10,
+      paddingTop: 10,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',

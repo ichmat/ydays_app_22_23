@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { PermissionsAndroid } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 
-const useFileStorage = () => {
+const imgDir = FileSystem.cacheDirectory + 'eveilImg/';
 
-    const checkPermission = () : boolean => {
-        return false
-    }
+const useFileStorage = () => {
+    
 }
 
 export default useFileStorage;
