@@ -107,7 +107,6 @@ const TaskProgress = (props : PropsTaskProgress) => {
             flex:1,
             backgroundColor: ThemeColor.PRIMARY,
             borderRadius: 15
-
         },
         editText:{
             fontFamily: 'Paralucent',

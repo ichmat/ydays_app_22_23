@@ -6,9 +6,13 @@ import React from 'react';
 import { DataTask, Frequency, FrequencyEvery, ProgressTask, RecurrentTask, SimpleTask, TypeTask, WEEKDAY } from '../../../types/types';
 import { useTasks } from '../../hooks';
 import { Task, TaskProgress } from '../../components';
+import { textAlign, width } from '@mui/system';
 
 const Home = (HomeProp: any) => {
   //const navTabUpdate = HomeProp.route.params.navTabUpdate;
+
+  const MAX_TITLE_CHAR : number = 17
+  const MAX_DESC_CHAR : number = 25
 
   const {tasks} = useTasks();
 
@@ -44,8 +48,15 @@ const Home = (HomeProp: any) => {
                 displayedTasks.map((task, index) => {
                   return (
                     <View key={index} style={styles.TaskBox}>
-                      <View style={styles.taskTitle}>{task.titre}</View>
-                      <View></View>
+                      <View style={styles.taskTitle}>{task.titre.length > MAX_TITLE_CHAR ? task.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : task.titre}</View>
+                      <View style={styles.taskDesc}>{task.description.length > MAX_DESC_CHAR ?  task.description.substring(0,MAX_DESC_CHAR-3) + '...' : task.description}</View>
+                      {
+                        task.typeTask == TypeTask.Progress && (
+                            <View style={styles.containerBar}>
+                              <View style={[styles.bar,{width: (task as ProgressTask).progress+'%',}]} />
+                          </View>
+                        )
+                      }
                     </View>
                   )
                 })
@@ -92,6 +103,19 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       
     },
+    containerBar:{
+      height:12,
+      alignSelf:'stretch',
+      backgroundColor:ThemeColor.SECONDARY,
+      borderRadius: 15,
+      width:'80%',
+      marginLeft: '10%',
+    },
+    bar:{
+      flex:1,
+      backgroundColor: ThemeColor.PRIMARY,
+      borderRadius: 15,
+    },
     containerImageProfil:{
       position:'absolute',
       width:'100%',
@@ -106,13 +130,14 @@ const styles = StyleSheet.create({
       zIndex: -1
     },
     TaskBox: {
+      flexDirection: 'column',
       width: 150,
       height: 60,
       borderWidth: 1,
       backgroundColor: ThemeColor.WHITE,
       borderRadius: 10,
       marginLeft:15,
-
+      justifyContent: 'center',
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
@@ -125,6 +150,13 @@ const styles = StyleSheet.create({
     },
     taskTitle: {
       marginLeft:15,
+      fontFamily: CustomFont.PARALUCENT_DEMIBOLD,
+      fontSize: 15
+    },
+    taskDesc: {
+      marginLeft:15,
+      fontFamily: CustomFont.PARALUCENT,
+      fontSize: 11
     },
   });
   
