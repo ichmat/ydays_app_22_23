@@ -26,7 +26,7 @@ const Parameter = (ParameterProp: any) => {
     //ProfilProps.navigation.goBack()
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => ParameterProp.navigation.goBack()} style={{width:100, height:40, backgroundColor:"#FF0000", flexDirection:'row', alignItems:'center'}}>
+            <Pressable onPress={() => ParameterProp.navigation.goBack()} style={{width:100, height:40,flexDirection:'row', alignItems:'center'}}>
             <MaterialCommunityIcons color={ThemeColor.BLACK} size={40} name='chevron-left' />
             <Text style={{fontSize:20}}>Retour</Text>
             </Pressable>

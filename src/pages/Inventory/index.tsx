@@ -37,7 +37,6 @@ const Inventory = (InventoryProps: any) => {
       }
 
     return (
-        
         <View style={styles.container}>
             <View  style={styles.containerInventory}>
             {

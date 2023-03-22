@@ -12,8 +12,6 @@ type PropsProfilEditor = {
     displayStyle: ViewStyle,
 }
 
-
-
 const Categories = [
     {title: "Cheveux", catergory : CATEGORY_HEAD.HAIR},
     {title: "Visage", catergory : CATEGORY_HEAD.FACE},
@@ -25,7 +23,7 @@ const colorButtonSelected = ThemeColor.PRIMARY;
 
 const ProfilEditor = (props : PropsProfilEditor) => {
 
-    const {getColorsByCat, getItemHeadByCatAndColor} = useAvatar()
+    const {getColorsHeadByCat, getItemHeadByCatAndColor} = useAvatar()
 
     const {requestClosePage, displayStyle} = props
     const [categorySelected,setCategorySelected] = useState<CATEGORY_HEAD | undefined>(undefined)
@@ -38,13 +36,16 @@ const ProfilEditor = (props : PropsProfilEditor) => {
 
     const [listItemHead, setListItemHead] = useState<ItemHead[] | undefined>(undefined)
 
+    const [itemStyles, setItemStyles] = useState<ViewStyle[]>([])
+    const [selectedItem, setSelectedItem] = useState<number>(-1)
+
     useEffect(() => {
         if(categorySelected != undefined){
             let newCatStyles : ViewStyle[] = [styles.catBox,styles.catBox,styles.catBox,styles.catBox]
-            const newStyle : ViewStyle = {backgroundColor: colorButtonSelected, height: 40, width: 100, borderRadius: 10, justifyContent:'center', alignItems:'center'};
+            const newStyle : ViewStyle = {backgroundColor: colorButtonSelected, marginHorizontal: 10, height: 40, width: 100, borderRadius: 10, justifyContent:'center', alignItems:'center'};
             newCatStyles[categorySelected] = newStyle
             setCatStyles(newCatStyles)
-            const colors: string[] = getColorsByCat(categorySelected)
+            const colors: string[] = getColorsHeadByCat(categorySelected)
             setListColorsAvailable(colors)
             let styleSelector : ViewStyle[] = []
             colors.forEach((color) => {
@@ -66,6 +67,7 @@ const ProfilEditor = (props : PropsProfilEditor) => {
 
     useEffect(() => {
         if(colorSelected != undefined) {
+            setSelectedItem(-1)
 
             let newColorStyles : ViewStyle[] = []
 
@@ -100,7 +102,20 @@ const ProfilEditor = (props : PropsProfilEditor) => {
         }
     }, [colorSelected])
 
-    // afficher ces listItemHead grâce au map
+    useEffect(() => {
+        if(listItemHead != undefined){
+            const styles : ViewStyle[] = []
+            for (let index = 0; index <= listItemHead?.length; index++) {
+                if(index != selectedItem){
+                    styles.push({})
+                }else{
+                    styles.push({backgroundColor: ThemeColor.SECONDARY})
+                }
+            }
+            setItemStyles(styles)
+        }
+    },[selectedItem])
+
     return (
         <View style={[styles.mainContainer,displayStyle]}>
             <Pressable style={styles.buttonBack} onPress={requestClosePage}>
@@ -141,13 +156,13 @@ const ProfilEditor = (props : PropsProfilEditor) => {
                     {
                         listItemHead != undefined &&
                         listItemHead.map((item,index) => {
-                            return (<View key={index} style={styles.HeadItem}>
-                                <Image style={{width:50, height:50}} source={item.image}/>
-                            </View>)
+                            return (
+                            <Pressable onPress={() => setSelectedItem(index)} key={index} style={[styles.HeadItem, itemStyles[index]]}>
+                                <Image style={{width:'80%',height:'80%',resizeMode:'contain'}} source={item.image}/>
+                            </Pressable>)
                         })
                     }
                 </View>
-                
             </ScrollView>
         </View>
     )
@@ -169,6 +184,7 @@ const styles = StyleSheet.create({
     },
     catBox: {
         height: 40,
+        marginHorizontal: 10,
         width: 100,
         backgroundColor: ThemeColor.SECONDARY,
         borderRadius: 10,
@@ -198,10 +214,20 @@ const styles = StyleSheet.create({
         height: 80,
         marginLeft: 5,
         marginRight: 5,
-        backgroundColor: ThemeColor.SECONDARY,
+        backgroundColor: ThemeColor.WHITE,
         borderRadius: 10,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+
+        shadowColor: ThemeColor.SECONDARY,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 9,
+        
+        elevation: 20,
     },
   });
 

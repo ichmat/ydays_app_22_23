@@ -36,7 +36,7 @@ const TaskProgress = (props : PropsTaskProgress) => {
                 <View style={styles.containerTitle}>
                     <Text style={styles.title}>{props.theTask.titre.length > MAX_TITLE_CHAR ? props.theTask.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : props.theTask.titre}</Text>
                     <Text style={styles.desc}>{props.theTask.description.length > MAX_DESC_CHAR ?  props.theTask.description.substring(0,MAX_DESC_CHAR-3) + '...' : props.theTask.description}</Text>
-                    <Pressable onPress={() => {props.openTask(props.theTask)}}>
+                    <Pressable style={{alignSelf:'flex-start'}} onPress={() => {props.openTask(props.theTask)}}>
                         <Text style={styles.editText}>Modifier la tâche</Text>
                     </Pressable>
                     <View style={styles.containerBar}>

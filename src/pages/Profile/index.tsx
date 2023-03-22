@@ -1,6 +1,6 @@
 import { borderLeft } from '@mui/system';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, TextInput, StatusBar, StyleSheet, Text, View, Pressable, ScrollView, ViewStyle } from 'react-native';
+import { Button, TextInput, StatusBar, StyleSheet, Text, View, Pressable, ScrollView, ViewStyle,Image } from 'react-native';
 import { Pressable as MaterialPress } from '@react-native-material/core'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -27,6 +27,8 @@ const Profile = (ProfilProps: any) => {
     const [displayCategorie, setDisplayCategorie] = useState<ViewStyle>({display: 'none'})
     const [displayEditorProfil, setDisplayEditorProfil] = useState<ViewStyle>({display: 'none'})
     const [displayEditorOutfit, setDisplayEditorOutfit] = useState<ViewStyle>({display: 'none'})
+
+    const [displayApperance,setDisplayApperance] = useState<boolean>(false)
 
     useEffect(() => {
       switch(navProfilPage){
@@ -58,6 +60,16 @@ const Profile = (ProfilProps: any) => {
         ProfilProps.navigation.navigate(to)
       }
 
+    const changeDisplayApperance = () => {
+      const newValue = !displayApperance
+
+      if(newValue){
+        setNavProfilPage(NavProfile.MAIN)
+      }
+
+      setDisplayApperance(newValue)
+    }
+
     return (
       
       <View style={styles.container}>
@@ -70,50 +82,72 @@ const Profile = (ProfilProps: any) => {
           <Text style={styles.Title} >Mon avatar</Text>
 
           <View style={styles.HeaderButton}>
-            <Pressable style={styles.Apparence}>
-                <Text style={[styles.SubTitle, {fontFamily:CustomFont.PARALUCENT}]}>Apparence</Text>
-            </Pressable>
-            <Pressable style={styles.Succes}>
-                <Text style={[styles.SubTitle, {fontFamily:CustomFont.PARALUCENT}]}>Succès</Text>
-            </Pressable>
+            {
+              !displayApperance && (
+                <MaterialPress style={[styles.Apparence, {backgroundColor: ThemeColor.WHITE}]} onPress={() => {changeDisplayApperance()}}>
+                  <Text style={[styles.SubTitle, {color:ThemeColor.BLACK}]}>Apparence</Text>
+              </MaterialPress>
+              )
+            }
+            {
+              displayApperance && (
+                <MaterialPress style={[styles.Apparence]} onPress={() => {changeDisplayApperance()}}>
+                  <Text style={[styles.SubTitle, {color:ThemeColor.WHITE}]}>Apparence</Text>
+              </MaterialPress>
+              )
+            }
+            
+            <MaterialPress style={[styles.Succes, {backgroundColor: ThemeColor.WHITE}]}>
+                <Text style={[styles.SubTitle, {color:ThemeColor.BLACK}]}>Succès</Text>
+            </MaterialPress>
           </View>
         </View>
-        <ScrollView ref={scrollViewRef} scrollEnabled={bottomScrollEnabled} style={styles.Bottom} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-          <View style={styles.BottomContent}>
-            <Pressable style={{width:110, height:6, borderRadius:10, backgroundColor: "#C0C0C0", alignSelf: 'center', marginTop:15, marginBottom:15}}></Pressable>
-            
-            <View style={[styles.Categorie, displayCategorie]}>
-                <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITPROFIL)}} style={styles.CategorieStyle}>
-                  <View style={styles.CategorieStyleLeft}>
-                    <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='face-man-profile' />
-                    <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier mon avatar</Text>
-                  </View>
-                  <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </MaterialPress>
+
+        <View style={styles.containerImageProfil}>
+          <Image style={styles.ImageProfil} source={require('../../assets/man.png')}/>
+        </View>
+
+        {
+          displayApperance && (
+            <ScrollView ref={scrollViewRef} scrollEnabled={bottomScrollEnabled} style={styles.Bottom} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+              <View style={styles.BottomContent}>
+                <Pressable style={{width:110, height:6, borderRadius:10, backgroundColor: "#C0C0C0", alignSelf: 'center', marginTop:15, marginBottom:15}}></Pressable>
                 
-                <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITOUTFIL)}} style={styles.CategorieStyle}>
-                  <View style={styles.CategorieStyleLeft}>
-                    <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='hanger' />
-                    <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier ma tenue</Text>
-                  </View>
-                  <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </MaterialPress>
+                <View style={[styles.Categorie, displayCategorie]}>
+                    <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITPROFIL)}} style={styles.CategorieStyle}>
+                      <View style={styles.CategorieStyleLeft}>
+                        <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='face-man-profile' />
+                        <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier mon avatar</Text>
+                      </View>
+                      <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
+                    </MaterialPress>
+                    
+                    <MaterialPress onPress={() => {setNavProfilPage(NavProfile.EDITOUTFIL)}} style={styles.CategorieStyle}>
+                      <View style={styles.CategorieStyleLeft}>
+                        <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='hanger' />
+                        <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Modifier ma tenue</Text>
+                      </View>
+                      <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
+                    </MaterialPress>
 
-                <MaterialPress style={styles.CategorieStyle}>
-                  <View style={styles.CategorieStyleLeft}>
-                    <Feather color={ThemeColor.BLACK} size={25} name='share' />
-                    <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Partager mon avatar</Text>
-                  </View>
-                  <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
-                </MaterialPress>
-            </View>
+                    <MaterialPress style={styles.CategorieStyle}>
+                      <View style={styles.CategorieStyleLeft}>
+                        <Feather color={ThemeColor.BLACK} size={25} name='share' />
+                        <Text style={[{marginLeft:5}, {fontFamily:CustomFont.PARALUCENT}]}>Partager mon avatar</Text>
+                      </View>
+                      <MaterialCommunityIcons color={ThemeColor.BLACK} size={25} name='chevron-right' />
+                    </MaterialPress>
+                </View>
 
-            <ProfilEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorProfil} />
+                <ProfilEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorProfil} />
 
-            <OutfitEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorOutfit} />
+                <OutfitEditor requestClosePage={() => {setNavProfilPage(NavProfile.MAIN)}} displayStyle={displayEditorOutfit} />
 
-          </View>
-        </ScrollView>
+              </View>
+            </ScrollView>
+          )
+        }
+        
       </View>
       
         
@@ -178,8 +212,21 @@ const styles = StyleSheet.create({
       paddingBottom: 12,
       paddingLeft: 40,
       paddingRight: 40,
-      backgroundColor: ThemeColor.PRIMARY_SHADE,
+      backgroundColor: ThemeColor.PRIMARY,
       borderRadius: 15,
+
+      justifyContent:'center',
+      alignItems:'center',
+
+      shadowColor: ThemeColor.PRIMARY,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.37,
+      shadowRadius: 7.49,
+
+      elevation: 12,
     },
     Succes: {
       border: 1,
@@ -187,10 +234,26 @@ const styles = StyleSheet.create({
       paddingBottom: 12,
       paddingLeft: 58,
       paddingRight: 58,
-      backgroundColor: ThemeColor.PRIMARY_SHADE,
+      backgroundColor: ThemeColor.PRIMARY,
       borderRadius: 15,
+
+      justifyContent:'center',
+      alignItems:'center',
+
+      shadowColor: ThemeColor.PRIMARY,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.37,
+      shadowRadius: 7.49,
+
+      elevation: 12,
     },
+   
     SubTitle: {
+      fontFamily:CustomFont.PARALUCENT,
+      color: ThemeColor.WHITE,
       fontSize: 15,
     },
     Categorie: {
@@ -209,6 +272,22 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center'
     },
+
+    containerImageProfil:{
+      position:'absolute',
+      width:'100%',
+      height: '100%',
+      justifyContent:'center',
+      alignItems:'center',
+      marginTop:'5%',
+      zIndex: -100
+    },
+    ImageProfil:{
+      width: '50%',
+      height: '50%',
+      resizeMode:'contain',
+      zIndex: -100
+    }
   });
 
 export default Profile

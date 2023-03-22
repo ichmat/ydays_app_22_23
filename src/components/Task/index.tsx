@@ -54,7 +54,7 @@ const Task = (props : PropsTask) => {
     }
 
     return (
-    <Pressable onPressIn={() => {setActiveAnimation(true)}} onPressOut={() => {setActiveAnimation(false)}} onLongPress={changeState}>
+    <Pressable style={{backgroundColor: "#00000000"}} onPressIn={() => {setActiveAnimation(true)}} onPressOut={() => {setActiveAnimation(false)}} onLongPress={changeState}>
         <SafeAreaView style={styles.containerTask}>
             <Animated.View style={{ width: widthBar, position:"absolute", left:0, height:'100%', top:0, borderRadius: Radius.TASK}}>
                 <LinearGradient
@@ -67,7 +67,7 @@ const Task = (props : PropsTask) => {
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>{props.theTask.titre.length > MAX_TITLE_CHAR ? props.theTask.titre.substring(0,MAX_TITLE_CHAR-3) + '...' : props.theTask.titre}</Text>
                 <Text style={styles.desc}>{props.theTask.description.length > MAX_DESC_CHAR ?  props.theTask.description.substring(0,MAX_DESC_CHAR-3) + '...' : props.theTask.description}</Text>
-                <PressMaterial onPress={() => {props.openTask(props.theTask)}}>
+                <PressMaterial style={{alignSelf:'flex-start'}} onPress={() => {props.openTask(props.theTask)}}>
                     <Text style={styles.editText}>Modifier la tâche</Text>
                 </PressMaterial>
             </View>

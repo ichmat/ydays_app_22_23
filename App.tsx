@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Button, TextInput, StatusBar, Pressable, StyleSheet, Text, View, Animated, SafeAreaView, PermissionsAndroid, Permission, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeColor } from './theme';
-import { Home, Profile, Tasks, Parameter, Inventory } from './src/pages';
+import { Home, Profile, Tasks, Parameter, Inventory, Program } from './src/pages';
 import {IconButton, AppBar, FAB, ActivityIndicator } from "@react-native-material/core";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -142,6 +142,17 @@ export default function App() {
               }
             }}
           />
+          <Stack.Screen 
+          name="Program"
+          component={Program}
+          options={{
+            headerShown: false,
+            headerTitle: 'Programme',
+            headerStyle:{
+              backgroundColor: ThemeColor.BACKGROUND,
+            }
+          }}
+          />
           <Stack.Screen
             name="Inventory"
             component={Inventory}
@@ -158,8 +169,8 @@ export default function App() {
       <Shadow style={{width: '100%'}}>
         <View style={styles.containerBottomNavBar} >
           <Feather onPress={() => {navigate("Home")}} name='home' style={styles.icon} size={30} color={ navIsReady && actualNavigation == "Home" ? SelectedColorIcon : UnselectedColorIcon} />
-          <Feather onPress={() => {navigate("Tasks")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
-          <Feather onPress={() => {navigate("Inventory")}} name='archive' style={styles.icon} size={30} color={ actualNavigation == "Inventory" ? SelectedColorIcon : UnselectedColorIcon} />
+          <Feather onPress={() => {navigate("Tasks")}} name='archive' style={styles.icon} size={30} color={ actualNavigation == "Tasks" ? SelectedColorIcon : UnselectedColorIcon} />
+          <Feather onPress={() => {navigate("Program")}} name='target' style={styles.icon} size={30} color={ actualNavigation == "Program" ? SelectedColorIcon : UnselectedColorIcon} />
           <Feather onPress={() => {navigate("Profile")}} name='user' style={styles.icon} size={30} color={ actualNavigation == "Profile" || actualNavigation == "Parameter" ? SelectedColorIcon : UnselectedColorIcon} />
         </View>
       </Shadow>

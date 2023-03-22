@@ -20,7 +20,10 @@ export enum CATEGORY_HEAD{
 }
 
 export enum CATEGORY_BODY{
-    
+    TOP,
+    BOTTOM,
+    WETSUITS,
+    SHOES
 }
 
 export enum ITEM_TYPE{

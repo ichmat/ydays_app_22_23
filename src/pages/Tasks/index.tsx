@@ -6,7 +6,7 @@ import { DataTask, Frequency, ProgressTask, SimpleTask, TypeTask} from '../../..
 import { useTasks } from '../../hooks';
 import { FrequencySelector, Task ,TaskProgress} from '../../components';
 import { Pressable as PressMaterial, TextInput } from '@react-native-material/core';
-import { ThemeColor } from '../../../theme';
+import { CustomFont, ThemeColor } from '../../../theme';
 import { ActivityIndicator } from "@react-native-material/core";
 import { SelectList } from 'react-native-dropdown-select-list'
 import { ModalTaskCreation, ModalTaskEdition} from '../../components';
@@ -28,20 +28,29 @@ const Tasks = (TaskProps : any) => {
   // référence la tâche séléctionné (pour la modal de modification/suppression)
   const [selectedTask, setSelectedTask] = useState<DataTask>();
   
+  const [showHiddenTask, setShowHiddenTask] = useState<boolean>(false)
+
   const [displayedTasks, setDisplayedTasks] = useState<DataTask[]>([])
+  const [hiddenTasks, setHiddenTasks] = useState<DataTask[]>([])
 
   useEffect(() => {
     if(tasks != undefined && tasks.length > 0){
-      console.log(tasks)
-      setDisplayedTasks(tasks.filter(t => {
-        if(t.isFinished == false){
-          return(t.startTask <= Frequency.now())
+      const showedTasks : DataTask[] = []
+      const hidenTasks : DataTask[] = []
+      tasks.forEach(t => {
+        if(t.isFinished == false ){
+          showedTasks.push(t)
         }else{
-          return(t.endTask > Frequency.now())
+          hidenTasks.push(t)
         }
-      }))
+      })
+      
+      setDisplayedTasks(showedTasks)
+      setHiddenTasks(hidenTasks)
+      
     }else{
       setDisplayedTasks([])
+      setHiddenTasks([])
     }
   },[tasks])
 
@@ -97,7 +106,27 @@ const Tasks = (TaskProps : any) => {
               return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
             }
           })}
-        </View >
+
+          {
+            hiddenTasks.length > 0 && (
+              <PressMaterial style={styles.buttonHiddenTask} onPress={() => setShowHiddenTask(!showHiddenTask)}>
+                <Text style={styles.txtHiddenTask}>Tâches cachés</Text>
+              </PressMaterial>
+            )
+          }
+
+          {
+            showHiddenTask && 
+            hiddenTasks.map((task: DataTask, index: number) => {
+              if(task.typeTask == TypeTask.Simple){
+                return <Task key={index} theTask={task as SimpleTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
+              }else if(task.typeTask == TypeTask.Progress){
+                return <TaskProgress key={index} theTask={task as ProgressTask} openTask={openTaskDetail} changeStateTask={changeState} deleteTask={removeTask}/>
+              }
+            })
+          }
+          
+        </View>
       </ScrollView>
       <Pressable onPress={() => (setModalCreateVisible(true))} style={styles.floatingInput}>
           <AntDesign color={ThemeColor.WHITE} size={25} name='plus'/>
@@ -151,7 +180,31 @@ const styles = StyleSheet.create({
       padding: 20,
       fontSize: 40,
       //fontWeight: 'bold',
-      fontFamily: 'AusterRoundedBlack',
+      fontFamily: CustomFont.AUSTER,
+    },
+    buttonHiddenTask:{
+      width: '100%',
+      height: 50,
+      backgroundColor: ThemeColor.PRIMARY,
+      justifyContent:'center',
+      alignItems:'center',
+      borderRadius: 10,
+      marginBottom: 10,
+
+      shadowColor: ThemeColor.PRIMARY,
+      shadowOffset: {
+        width: 0,
+        height: 6,
+      },
+      shadowOpacity: 0.37,
+      shadowRadius: 7.49,
+
+      elevation: 12,
+    },
+    txtHiddenTask:{
+      fontFamily: CustomFont.PARALUCENT,
+      color: ThemeColor.WHITE,
+      fontSize: 15,
     }
   });
   
