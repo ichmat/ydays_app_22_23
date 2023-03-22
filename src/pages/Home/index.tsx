@@ -45,7 +45,7 @@ const Home = (HomeProp: any) => {
                   return (
                     <View key={index} style={styles.TaskBox}>
                       <View style={styles.taskTitle}>{task.titre}</View>
-                      <View>{TaskProgress(task)}</View>
+                      <View></View>
                     </View>
                   )
                 })
