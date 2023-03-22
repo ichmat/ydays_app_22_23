@@ -12,6 +12,8 @@ type PropsProfilEditor = {
     displayStyle: ViewStyle,
 }
 
+let SliderSize = [100, undefined, undefined, undefined];
+
 const Categories = [
     {title: "Cheveux", catergory : CATEGORY_HEAD.HAIR},
     {title: "Visage", catergory : CATEGORY_HEAD.FACE},

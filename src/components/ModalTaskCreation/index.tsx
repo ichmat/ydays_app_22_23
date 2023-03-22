@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StatusBar, StyleSheet, Text, View, Modal, TextInput } from 'react-native';
 import { Pressable } from '@react-native-material/core';
-import { ThemeColor } from '../../../theme';
+import { CustomFont, ThemeColor } from '../../../theme';
 import { DataTask, Frequency, TypeTask } from '../../../types/types';
 import FrequencySelector from '../FrequencySelector';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
@@ -61,8 +61,8 @@ const ModalTaskCreation = (props: PropsModalTaskCreation) => {
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
               <Text style={styles.buttonTxt}>Créer</Text>
             </Pressable>
-            <Pressable style={styles.button} pressEffect='ripple' onPress={() => {requestHideModal()}}>
-              <Text style={styles.buttonTxt}>Annuler</Text>
+            <Pressable style={[styles.button, {backgroundColor: ThemeColor.WHITE, borderWidth: 2, borderColor: ThemeColor.BLACK}]} pressEffect='ripple' onPress={() => {requestHideModal()}}>
+              <Text style={[styles.buttonTxt, {color: ThemeColor.BLACK}]}>Annuler</Text>
             </Pressable>
           </View>
         </View>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
       minHeight: 30,
       padding: 5,
       backgroundColor: ThemeColor.BLACK,
-      borderRadius: 5,
+      borderRadius: 10,
       margin: 5,
       alignItems: 'center',
       justifyContent: 'center',
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     buttonTxt:{
-      color:'#FFFFFF'
+      color:'#FFFFFF',
+      fontFamily: CustomFont.PARALUCENT
     }
   });
 
