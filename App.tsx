@@ -130,6 +130,7 @@ export default function App() {
           <Stack.Screen
             name="Profile"
             component={Profile}
+          
           />
           <Stack.Screen
             name="Parameter"
@@ -144,13 +145,16 @@ export default function App() {
           />
           <Stack.Screen 
           name="Program"
+          initialParams={{
+            navTabUpdate:navigate
+          }}
           component={Program}
           options={{
             headerShown: false,
             headerTitle: 'Programme',
             headerStyle:{
               backgroundColor: ThemeColor.BACKGROUND,
-            }
+            },
           }}
           />
           <Stack.Screen

@@ -24,6 +24,8 @@ const ModalTaskCreation = (props: PropsModalTaskCreation) => {
     
     const [frequency, setFrequency] = useState<Frequency[]>([])
 
+    const [notReady,setNotReady] = useState<boolean>(false);
+
     const createNewTask = () => {
         // envoie la requête de création d etâcje
         newTask(titleInput, descInput, typeTaskToCreate)
@@ -57,6 +59,7 @@ const ModalTaskCreation = (props: PropsModalTaskCreation) => {
             <FormControlLabel value={TypeTask.Progress} control={<Radio />} label="progression" />
           </RadioGroup>
           </FormControl>
+
           <View style={styles.containerButton}>
             <Pressable style={styles.button} pressEffect='ripple' onPress={() => {createNewTask()}}>
               <Text style={styles.buttonTxt}>Créer</Text>
